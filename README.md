@@ -1,61 +1,27 @@
-mal schnell mit chatgpt gemacht:
+# Frontend
 
-Übersicht
-Dies ist ein Angular-Projekt mit einer einfachen CRUD-Anwendung (Create, Read, Update, Delete). Es enthält eine Frontend-Anwendung und ein Backend, die zusammenarbeiten, um Daten zu verwalten.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.4.
 
-Voraussetzungen
-Stelle sicher, dass die folgenden Softwarepakete auf deinem System installiert sind:
+## Development server
 
-Node.js (Version 14 oder höher)
-Angular CLI (Globale Installation empfohlen)
-Git (Für die Versionskontrolle)
-Java (Für das Backend, falls erforderlich)
-Maven (Falls du das Backend mit Maven baust)
-Installation
-Repository klonen:
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-Klone das Projekt auf deinen lokalen Rechner:
+## Code scaffolding
 
-bash
-Code kopieren
-git clone https://github.com/draarayan/Lernfel10-11.git
-cd Lernfel10-11
-Frontend installieren:
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-Gehe in das Verzeichnis frontend und installiere die benötigten Abhängigkeiten:
+## Build
 
-bash
-Code kopieren
-cd frontend
-npm install
-Frontend starten:
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-Um die Angular-Anwendung im Entwicklungsmodus zu starten, führe folgendes Kommando aus:
+## Running unit tests
 
-bash
-Code kopieren
-ng serve
-Die Anwendung sollte unter http://localhost:4200/ verfügbar sein.
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-Backend (falls benötigt):
+## Running end-to-end tests
 
-Wenn das Projekt ein Backend hat, stelle sicher, dass es korrekt konfiguriert ist und starte es:
+Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-Stelle sicher, dass die Datenbank korrekt konfiguriert ist (z.B. MySQL, PostgreSQL).
+## Further help
 
-Baue und starte das Backend:
-
-bash
-Code kopieren
-mvn clean install
-mvn spring-boot:run
-Dies sollte den Server auf http://localhost:8080/ oder einem anderen konfigurierten Port starten.
-
-Datenbank
-Stelle sicher, dass die erforderliche Datenbank installiert und konfiguriert ist.
-Die Datenbank-Konfigurationsdateien (z.B. application.properties oder application.yml) sollten entsprechend angepasst werden.
-Falls nötig, erstelle die Datenbanktabellen oder führe Migrationen aus.
-Entwicklungshinweise
-Um Änderungen am Code vorzunehmen, kannst du die Dateien in einem Texteditor wie Visual Studio Code bearbeiten.
-Jede Änderung im Frontend wird automatisch durch den Angular Live Development Server neu geladen.
-Backend-Änderungen erfordern einen Neustart des Servers.
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
