@@ -1,44 +1,46 @@
-import { Component } from '@angular/core';
-import { Item } from './item-list.module';
-import { ItemService } from './item-list.service';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ItemService } from '../item.service';
+import { Item } from '../item.model';
 
 @Component({
   selector: 'app-item-list',
   templateUrl: './item-list.component.html',
-  styleUrls: ['./item-list.component.css'],
-  standalone: true,
+  styleUrls: ['./item-list.component.css']
 })
-export class ItemListComponent {
-  items: Item[] = [];
-  newItem: Item = { id: 0, name: '', description: '' };
+export class ItemListComponent implements OnInit {
+  items: Item[] = []; // Deklaration der 'items'-Eigenschaft
+  itemForm!: FormGroup; // Deklaration der 'itemForm'-Eigenschaft mit `!` zur Initialisierungssicherheit
 
-  constructor(private itemService: ItemService) {
-    this.itemService.getItems().subscribe((items: Item[]) => this.items = items);
+  constructor(private fb: FormBuilder, private itemService: ItemService) {
+    // Initialisiere das Formular im Konstruktor
+    this.itemForm = this.fb.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required]
+    });
   }
 
-  updateName(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    this.newItem.name = inputElement.value;
+  ngOnInit(): void {
+    this.getItems();
   }
 
-  updateDescription(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    this.newItem.description = inputElement.value;
+  getItems(): void {
+    this.itemService.getItems().subscribe(data => this.items = data);
   }
 
   addItem(): void {
-    if (this.newItem.name && this.newItem.description) {
-      this.newItem.id = this.items.length + 1;
-      this.itemService.addItem(this.newItem).subscribe((item: Item) => {
+    if (this.itemForm.valid) {
+      const newItem = this.itemForm.value;
+      this.itemService.createItem(newItem).subscribe(item => {
         this.items.push(item);
-        this.newItem = { id: 0, name: '', description: '' }; // Formular zurücksetzen
+        this.itemForm.reset();
       });
     }
   }
 
-  deleteItem(id: number): void {
+  deleteItem(id: number): void { // Stelle sicher, dass die Methode definiert ist
     this.itemService.deleteItem(id).subscribe(() => {
-      this.items = this.items.filter(item => item.id !== id); // Liste aktualisieren
+      this.items = this.items.filter(item => item.id !== id);
     });
   }
 }

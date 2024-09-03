@@ -1,19 +1,23 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';  // Dieser Import ist wichtig
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ItemListComponent } from './item-list/item-list.component';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { routes } from './app.routes';
 
 @NgModule({
+  declarations: [
+    AppComponent,
+    ItemListComponent // Stelle sicher, dass dies hier enthalten ist
+  ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes),
-    FormsModule,
-    CommonModule,  // Hier das FormsModule hinzufügen
+    HttpClientModule,
+    ReactiveFormsModule, // Importiert das ReactiveFormsModule
+    AppRoutingModule
   ],
-  providers: []
+  providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

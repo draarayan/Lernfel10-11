@@ -1,18 +1,21 @@
 <h2>Item List</h2>
+
 <ul>
-  <li *ngFor="let item of items">
-    {{ item.name }} - {{ item.description }}
-    <button (click)="deleteItem(item.id)">Delete</button>
-  </li>
+  @for (item of items; track item.id) {
+    <li>
+      {{ item.name }} - {{ item.description }}
+      <button (click)="deleteItem(item.id!)">Delete</button>
+    </li>
+  }
 </ul>
 
 <h3>Add New Item</h3>
-<form (ngSubmit)="addItem()">
+<form [formGroup]="itemForm" (ngSubmit)="addItem()">
   <label for="name">Name:</label>
-  <input type="text" id="name" (input)="updateName($event)" required />
+  <input id="name" formControlName="name" required>
 
   <label for="description">Description:</label>
-  <input type="text" id="description" (input)="updateDescription($event)" required />
+  <input id="description" formControlName="description" required>
 
-  <button type="submit">Add Item</button>
+  <button type="submit" [disabled]="itemForm.invalid">Add Item</button>
 </form>
