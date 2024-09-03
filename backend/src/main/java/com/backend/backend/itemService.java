@@ -1,20 +1,20 @@
 package com.backend.backend;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
-public class itemService {
+public class ItemService {
 
     @Autowired
-    private com.backend.backend.itemRepository itemRepository;
+    private ItemRepository itemRepository;
 
-    public List<item> findAll() {
+    public List<Item> findAll() {
         return itemRepository.findAll();
     }
 
-    public item save(item item) {
+    public Item save(Item item) {
         return itemRepository.save(item);
     }
 
