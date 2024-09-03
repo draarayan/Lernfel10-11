@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ItemService } from '../item.service';
 import { Item } from '../item.model';
 
@@ -10,9 +10,9 @@ import { Item } from '../item.model';
 })
 export class ItemListComponent implements OnInit {
   items: Item[] = []; // Deklaration der 'items'-Eigenschaft
-  itemForm!: FormGroup; // Deklaration der 'itemForm'-Eigenschaft mit `!` zur Initialisierungssicherheit
+  itemForm!: UntypedFormGroup; // Deklaration der 'itemForm'-Eigenschaft mit `!` zur Initialisierungssicherheit
 
-  constructor(private fb: FormBuilder, private itemService: ItemService) {
+  constructor(private fb: UntypedFormBuilder, private itemService: ItemService) {
     // Initialisiere das Formular im Konstruktor
     this.itemForm = this.fb.group({
       name: ['', Validators.required],
