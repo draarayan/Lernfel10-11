@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';  // Importiere Router
-import { catchError, Observable, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 export class UserService {
   private apiUrl = 'http://localhost:8080/api/users'; // URL zum Spring Backend
 
-  constructor(private http: HttpClient, private router: Router) { }  // Integriere Router
+  constructor(private http: HttpClient, private router: Router) { }
 
   registerUser(user: { email: string, password: string, name?: string, description?: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
@@ -19,6 +19,12 @@ export class UserService {
 
   loginUser(user: { email: string, password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, user).pipe(
+      tap(response => {
+        // Setze den Token in LocalStorage, wenn die Login-Anfrage erfolgreich ist
+        localStorage.setItem('authToken', response.token);
+        // Weiterleiten zum Dashboard
+        this.navigateToDashboard();
+      }),
       catchError(this.handleError)
     );
   }
@@ -29,7 +35,18 @@ export class UserService {
   }
 
   // Hilfsmethode, um nach erfolgreichem Login weiterzuleiten
-  navigateToDashboard() {
+  private navigateToDashboard() {
     this.router.navigate(['/dashboard']);
+  }
+
+  // Überprüft, ob der Benutzer angemeldet ist
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('authToken');
+  }
+
+  // Loggt den Benutzer aus
+  logout(): void {
+    localStorage.removeItem('authToken');
+    this.router.navigate(['/login']);
   }
 }
