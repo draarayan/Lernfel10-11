@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class UserService {
   private apiUrl = 'http://localhost:8080/api/users'; // URL zum Spring Backend
 
@@ -21,10 +20,8 @@ export class UserService {
   loginUser(user: { email: string, password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, user).pipe(
       tap(response => {
-        // Setze den Token in LocalStorage, wenn die Login-Anfrage erfolgreich ist
         localStorage.setItem('authToken', response.token);
-        // Weiterleiten zum Dashboard
-        this.navigateToDashboard();
+        this.router.navigate(['/dashboard']);  // Direkt weiterleiten
       }),
       catchError(this.handleError)
     );
@@ -35,24 +32,32 @@ export class UserService {
     return throwError(() => new Error('Something went wrong'));
   }
 
-  // Hilfsmethode, um nach erfolgreichem Login weiterzuleiten
-  private navigateToDashboard() {
-    this.router.navigate(['/dashboard']);
+  logoutUser(): Observable<void> {
+    localStorage.removeItem('authToken');
+    return new Observable<void>(observer => {
+      this.router.navigate(['/login']);
+      observer.next();
+      observer.complete();
+    });
   }
 
-  logoutUser(): void {
-    localStorage.removeItem('authToken'); // Token entfernen
-  }
-
-
-  // Überprüft, ob der Benutzer angemeldet ist
   isLoggedIn(): boolean {
     return !!localStorage.getItem('authToken');
   }
 
-  // Loggt den Benutzer aus
-  logout(): void {
-    localStorage.removeItem('authToken');
-    this.router.navigate(['/login']);
+  getUserProfile(): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/profile`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deleteUser(): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete<any>(`${this.apiUrl}/delete`, { headers }).pipe(
+      catchError(this.handleError)
+    );
   }
 }

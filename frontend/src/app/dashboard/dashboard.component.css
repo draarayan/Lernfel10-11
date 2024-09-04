@@ -38,3 +38,13 @@ button {
 button:hover {
   background-color: #ff1a1a;
 }
+/* dashboard.component.css */
+.user-name {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
+.user-name:hover {
+  color: darkblue;
+}

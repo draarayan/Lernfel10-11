@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '../user.servie';
+import { UserService } from '../user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,17 +9,40 @@ import { UserService } from '../user.servie';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  currentDate: string = '';  // Initialisiere mit einem leeren String
-  userName: string = '';    // Optional: Initialisiere auch `userName`
+  currentDate: string = '';
+  userName: string = '';
 
   constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
-    this.currentDate = new Date().toLocaleDateString();  // Setze den Wert im `ngOnInit`
-    this.userName = 'User Name';  // Ersetze dies durch echte Benutzerdaten, falls verfügbar
+    this.currentDate = new Date().toLocaleDateString();
+
+    // Benutzerdaten aus dem UserService laden
+    this.userService.getUserProfile().subscribe({
+      next: (profile) => {
+        this.userName = profile.name; // Hier den Namen aus dem Profil setzen
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Fehler beim Laden des Benutzerprofils:', error);
+        // Eventuell Weiterleitung zur Login-Seite, wenn das Profil nicht geladen werden kann
+        this.router.navigate(['/login']);
+      }
+    });
   }
+
   logout(): void {
-    this.userService.logoutUser(); // Logout-Methode im UserService aufrufen
-    this.router.navigate(['/login']); // Nach dem Logout zur Login-Seite navigieren
+    this.userService.logoutUser().subscribe({
+      next: () => {
+        // Nach dem Logout zur Login-Seite navigieren
+        this.router.navigate(['/login']);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Fehler beim Logout:', error);
+      }
+    });
+  }
+
+  goToUserProfile(): void {
+    this.router.navigate(['/profile']);
   }
 }
