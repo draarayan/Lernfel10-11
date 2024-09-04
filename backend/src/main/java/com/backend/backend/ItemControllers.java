@@ -6,7 +6,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/items")
 @CrossOrigin(origins = "http://localhost:4200")  // Diese Zeile fügt CORS-Unterstützung hinzu
-public class ItemController {
+public class ItemControllers {
 
     @Autowired
     private ItemService itemService;

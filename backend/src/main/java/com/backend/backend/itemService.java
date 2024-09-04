@@ -8,7 +8,7 @@ import java.util.List;
 public class ItemService {
 
     @Autowired
-    private ItemRepository itemRepository;
+    private ItemRepositorys itemRepository;
 
     public List<Item> findAll() {
         return itemRepository.findAll();
