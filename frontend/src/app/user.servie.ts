@@ -6,6 +6,7 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class UserService {
   private apiUrl = 'http://localhost:8080/api/users'; // URL zum Spring Backend
 
@@ -38,6 +39,11 @@ export class UserService {
   private navigateToDashboard() {
     this.router.navigate(['/dashboard']);
   }
+
+  logoutUser(): void {
+    localStorage.removeItem('authToken'); // Token entfernen
+  }
+
 
   // Überprüft, ob der Benutzer angemeldet ist
   isLoggedIn(): boolean {
