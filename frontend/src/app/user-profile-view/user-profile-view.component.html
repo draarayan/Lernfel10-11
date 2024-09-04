@@ -1,0 +1,12 @@
+<div class="user-profile">
+    <h1>User Profile</h1>
+    <div class="profile-info">
+      <p><strong>Name:</strong> {{ user.name }}</p>
+      <p><strong>Nachname:</strong> {{ user.nachname }}</p> <!-- Ändere description zu nachname -->
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Password:</strong> **********</p> <!-- Verstecktes Passwort -->
+    </div>
+  
+    <button (click)="deleteAccount()">Delete Account</button>
+  </div>
+  

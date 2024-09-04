@@ -18,7 +18,7 @@ public class Nutzer {
     
     private String password;  
     
-    private String description;
+    private String nachname; // Ändere description zu nachname
 
     // Getter und Setter
     public Long getId() {
@@ -53,11 +53,11 @@ public class Nutzer {
         this.password = password;
     }
 
-    public String getDescription() {
-        return description;
+    public String getNachname() { // Ändere die Getter/Setter-Methoden
+        return nachname;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setNachname(String nachname) {
+        this.nachname = nachname;
     }
 }

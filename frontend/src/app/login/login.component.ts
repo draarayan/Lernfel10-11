@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { UserService } from '../user.servie';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-login',
@@ -22,13 +22,13 @@ export class LoginComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       name: [''],
-      description: ['']
+      nachname: [''] // Geändertes Feldname
     });
   }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      const { email, password, name, description } = this.loginForm.value;
+      const { email, password, name, nachname } = this.loginForm.value;
 
       if (this.isLogin) {
         this.userService.loginUser({ email, password })
@@ -51,7 +51,7 @@ export class LoginComponent {
             }
           });
       } else {
-        this.userService.registerUser({ email, password, name, description })
+        this.userService.registerUser({ email, password, name, nachname })
           .subscribe({
             next: (response) => {
               console.log('User erfolgreich angelegt', response);
@@ -78,10 +78,10 @@ export class LoginComponent {
     this.isLogin = !this.isLogin;
     if (this.isLogin) {
       this.loginForm.removeControl('name');
-      this.loginForm.removeControl('description');
+      this.loginForm.removeControl('nachname');
     } else {
       this.loginForm.addControl('name', this.fb.control('', Validators.required));
-      this.loginForm.addControl('description', this.fb.control(''));
+      this.loginForm.addControl('nachname', this.fb.control('')); // Geändertes Feldname
     }
   }
 }
