@@ -20,7 +20,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       console.log('Login successful:', email, password);
-      // Füge hier die Logik zum Einloggen hinzu, z.B. API-Aufruf
+      // Hier der API Abruf
     }
   }
 }
