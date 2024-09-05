@@ -32,7 +32,7 @@ public class NutzerController {
         List<Nutzer> users = userService.findAll();
         return ResponseEntity.ok(users);
     }
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/profile")
     public ResponseEntity<?> getUserProfile(HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
@@ -48,7 +48,7 @@ public class NutzerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Benutzer nicht gefunden");
         }
     }
-    
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Nutzer user) {
         if (user.getEmail() == null || user.getPassword() == null || user.getName() == null) {
@@ -68,7 +68,7 @@ public class NutzerController {
                                  .body("Fehler beim Anlegen des Benutzers: " + e.getMessage());
         }
     }
-    
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Nutzer user) {
         Optional<Nutzer> existingUser = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
@@ -79,20 +79,24 @@ public class NutzerController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Ungültige Anmeldedaten");
         }
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        try {
-            if (userService.existsById(id)) {
-                userService.deleteById(id);
-                return ResponseEntity.ok("Benutzer erfolgreich gelöscht");
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                     .body("Benutzer nicht gefunden");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("Fehler beim Löschen des Benutzers: " + e.getMessage());
+    @CrossOrigin(origins = "http://localhost:4200")
+@DeleteMapping("/{id}")
+public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+    try {
+        if (userService.existsById(id)) {
+            System.out.println("ID existiert: " + id);
+            userService.deleteById(id);
+            return ResponseEntity.ok("Benutzer erfolgreich gelöscht");
+        } else {
+            System.out.println("ID existiert nicht: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("Benutzer nicht gefunden");
         }
+    } catch (Exception e) {
+        e.printStackTrace(); // Stacktrace für die Fehlersuche
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Fehler beim Löschen des Benutzers: " + e.getMessage());
     }
+}
+
 }

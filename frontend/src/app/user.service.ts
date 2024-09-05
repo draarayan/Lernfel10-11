@@ -66,6 +66,7 @@ export class UserService {
 
     return this.http.delete<any>(`${this.apiUrl}/${userId}`, { headers }).pipe(
       catchError(this.handleError)  // Fehlerbehandlung
+      
     );
   }
 
@@ -86,13 +87,25 @@ export class UserService {
 
   // Fehlerbehandlungsmethode
   private handleError(error: HttpErrorResponse) {
-    console.error('Error occurred:', error);
-    let errorMessage = 'Etwas ist schiefgelaufen';
+    let errorMessage = 'Etwas ist schiefgelaufen'; // Allgemeine Fehlermeldung
+  
+    // Prüft, ob der Fehler auf Client-Seite oder durch das Netzwerk auftrat
     if (error.error instanceof ErrorEvent) {
+      // Client- oder Netzwerkfehler
       errorMessage = `Fehler: ${error.error.message}`;
+      console.error('Client-seitiger Fehler:', error.error.message);
     } else {
+      // Backend-Fehler
       errorMessage = `Fehlercode: ${error.status}\nNachricht: ${error.message}`;
+  
+      // Nur Fehler mit Statuscodes 4xx oder 5xx werden geloggt
+      if (error.status >= 400 && error.status < 600) {
+        console.error(`Backend-Fehler [${error.status}]: ${error.message}`);
+      }
     }
+  
+    // Gibt die Fehlermeldung weiter
     return throwError(() => new Error(errorMessage));
   }
+  
 }

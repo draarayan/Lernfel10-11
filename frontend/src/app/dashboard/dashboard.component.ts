@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
       error: (error: HttpErrorResponse) => {
         console.error('Fehler beim Laden des Benutzerprofils:', error);
         // Eventuell Weiterleitung zur Login-Seite, wenn das Profil nicht geladen werden kann
-        //this.router.navigate(['/login']);
+        this.router.navigate(['/login']);
       }
     });
   }
