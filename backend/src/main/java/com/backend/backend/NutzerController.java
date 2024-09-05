@@ -1,10 +1,14 @@
 package com.backend.backend;
 
+import java.util.Map;  // Richtiger Import
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,14 +18,37 @@ import java.util.Optional;
 public class NutzerController {
 
     @Autowired
-    private NutzerService userService;
+    private final NutzerService userService;
 
+    public NutzerController(NutzerService userService) {
+        this.userService = userService;
+    }
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+    
     @GetMapping
     public ResponseEntity<List<Nutzer>> getAllUsers() {
         List<Nutzer> users = userService.findAll();
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<?> getUserProfile(HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Benutzer nicht authentifiziert");
+        }
+    
+        String username = principal.getName();
+        Optional<Nutzer> user = userService.findByEmail(username);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Benutzer nicht gefunden");
+        }
+    }
+    
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Nutzer user) {
         if (user.getEmail() == null || user.getPassword() == null || user.getName() == null) {
@@ -46,10 +73,10 @@ public class NutzerController {
     public ResponseEntity<?> loginUser(@RequestBody Nutzer user) {
         Optional<Nutzer> existingUser = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
         if (existingUser.isPresent()) {
-            return ResponseEntity.ok(existingUser.get());
+            String token = jwtTokenProvider.createToken(user.getEmail());  // JWT Token generieren
+            return ResponseEntity.ok(Map.of("token", token));  // Token in der Antwort senden
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                 .body("Ungültige Anmeldedaten");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Ungültige Anmeldedaten");
         }
     }
 

@@ -34,16 +34,23 @@ export class UserProfileViewComponent implements OnInit {
 
   deleteAccount(): void {
     if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      this.userService.deleteUser().subscribe({
-        next: () => {
-          alert('Your account has been deleted successfully.');
-          this.router.navigate(['/login']);
-        },
-        error: (error: HttpErrorResponse) => {
-          console.error('Error deleting account:', error);
-          alert('There was an error deleting your account. Please try again later.');
-        }
-      });
+      const userId = this.user.id; // Holen der Benutzer-ID aus dem Profil
+
+      if (userId) { // Überprüfen, ob die Benutzer-ID vorhanden ist
+        this.userService.deleteUser(userId).subscribe({
+          next: () => {
+            alert('Your account has been deleted successfully.');
+            this.router.navigate(['/login']);
+          },
+          error: (error) => {
+            console.error('Error deleting account:', error);
+            alert('There was an error deleting your account. Please try again later.');
+          }
+        });
+      } else {
+        console.error('User ID is not available.');
+        alert('Unable to delete account. User ID is missing.');
+      }
     }
   }
 }
