@@ -51,7 +51,7 @@ public class NutzerController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Nutzer user) {
-        if (user.getEmail() == null || user.getPassword() == null || user.getName() == null) {
+        if (user.getEmail() == null || user.getPassword() == null || user.getName() == null || user.getNachname() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fehlende erforderliche Felder");
         }
     

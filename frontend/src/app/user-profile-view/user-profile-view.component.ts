@@ -21,6 +21,7 @@ export class UserProfileViewComponent implements OnInit {
   loadUserProfile(): void {
     this.userService.getUserProfile().subscribe({
       next: (profile) => {
+        console.log('User profile loaded:', profile);
         this.user = profile;
       },
       error: (error: HttpErrorResponse) => {
