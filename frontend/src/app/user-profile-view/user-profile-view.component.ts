@@ -17,7 +17,10 @@ export class UserProfileViewComponent implements OnInit {
   ngOnInit(): void {
     this.loadUserProfile();
   }
-
+  goToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
+  
   loadUserProfile(): void {
     this.userService.getUserProfile().subscribe({
       next: (profile) => {
