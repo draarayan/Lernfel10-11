@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { UserService } from '../user.servie';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-login',
@@ -11,31 +11,33 @@ import { UserService } from '../user.servie';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  isLogin: boolean = true;
+  isLogin: boolean = true;  // Bestimmt, ob es sich um Login oder Registrierung handelt
+  errorMessage: string = ''; // Variable zur Anzeige von Fehlermeldungen
 
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
     private router: Router
   ) {
+    // Erstelle das Formular mit Validierungen
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      name: [''],
-      description: ['']
+      email: ['', [Validators.required, Validators.email]], // Email-Validierung
+      password: ['', Validators.required],                  // Passwort ist erforderlich
+      name: [''],                                           // Name ist optional beim Login
+      nachname: ['']                                        // Nachname ist optional beim Login
     });
   }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      const { email, password, name, description } = this.loginForm.value;
+      const { email, password, name, nachname } = this.loginForm.value;
 
+      // Prüfe, ob der Benutzer sich einloggt oder registriert
       if (this.isLogin) {
         this.userService.loginUser({ email, password })
           .subscribe({
             next: (response) => {
               console.log('Login erfolgreich', response);
-              // Weiterleitung zur Dashboard-Seite
               this.router.navigate(['/dashboard']).then(() => {
                 console.log('Navigiert zu Dashboard');
               }).catch((error) => {
@@ -44,18 +46,18 @@ export class LoginComponent {
             },
             error: (error: HttpErrorResponse) => {
               if (error.status === 401) {
-                console.error('Ungültige Anmeldedaten');
+                this.errorMessage = 'Ungültige Anmeldedaten';
               } else {
-                console.error('Fehler beim Login:', error.message);
+                this.errorMessage = `Fehler beim Login: ${error.message}`;
               }
+              console.error(this.errorMessage);
             }
           });
       } else {
-        this.userService.registerUser({ email, password, name, description })
+        this.userService.registerUser({ email, password, name, nachname })
           .subscribe({
             next: (response) => {
-              console.log('User erfolgreich angelegt', response);
-              // Optional: Weiterleitung nach erfolgreichem Registrieren
+              console.log('Benutzer erfolgreich angelegt', response);
               this.router.navigate(['/dashboard']).then(() => {
                 console.log('Navigiert zu Dashboard');
               }).catch((error) => {
@@ -64,24 +66,36 @@ export class LoginComponent {
             },
             error: (error: HttpErrorResponse) => {
               if (error.status === 400) {
-                console.error('Ein Benutzer mit dieser E-Mail-Adresse existiert bereits');
+                this.errorMessage = 'Ein Benutzer mit dieser E-Mail-Adresse existiert bereits';
               } else {
-                console.error('Fehler beim Anlegen des Benutzers:', error.message);
+                this.errorMessage = `Fehler beim Registrieren: ${error.message}`;
               }
+              console.error(this.errorMessage);
             }
           });
       }
+    } else {
+      this.errorMessage = 'Bitte fülle alle erforderlichen Felder aus.';
     }
   }
 
+  // Wechsel zwischen Login und Registrierung
   toggleMode(): void {
     this.isLogin = !this.isLogin;
+    this.errorMessage = ''; // Reset error message
+  
     if (this.isLogin) {
-      this.loginForm.removeControl('name');
-      this.loginForm.removeControl('description');
+      // Clear validators for 'name' and 'nachname' in login mode
+      this.loginForm.get('name')?.clearValidators();
+      this.loginForm.get('nachname')?.clearValidators();
     } else {
-      this.loginForm.addControl('name', this.fb.control('', Validators.required));
-      this.loginForm.addControl('description', this.fb.control(''));
+      // Set validators for 'name' and optionally 'nachname' in register mode
+      this.loginForm.get('name')?.setValidators(Validators.required);
+      this.loginForm.get('nachname')?.setValidators([]);
     }
+  
+    // Update the validity of the form after changing validators
+    this.loginForm.updateValueAndValidity();
   }
+  
 }

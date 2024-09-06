@@ -8,10 +8,12 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth.guard'; // Stelle sicher, dass der Pfad korrekt ist
+import { UserProfileViewComponent } from './user-profile-view/user-profile-view.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: UserProfileViewComponent, canActivate: [AuthGuard] }, // Füge die Profil-Route hinzu
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 

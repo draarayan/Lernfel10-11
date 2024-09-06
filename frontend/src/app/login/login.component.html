@@ -19,6 +19,7 @@
         </div>
       </div>
 
+      <!-- Name and Nachname Fields for Registration Mode -->
       <div *ngIf="!isLogin">
         <div class="input-group">
           <label for="name">Name</label>
@@ -29,8 +30,11 @@
         </div>
 
         <div class="input-group">
-          <label for="description">Description</label>
-          <input type="text" id="description" formControlName="description" />
+          <label for="nachname">Nachname</label>
+          <input type="text" id="nachname" formControlName="nachname" />
+          <div *ngIf="loginForm.get('nachname')?.invalid && loginForm.get('nachname')?.touched">
+            <small>Nachname is required</small>
+          </div>
         </div>
       </div>
 
