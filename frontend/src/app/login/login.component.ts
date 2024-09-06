@@ -82,13 +82,20 @@ export class LoginComponent {
   // Wechsel zwischen Login und Registrierung
   toggleMode(): void {
     this.isLogin = !this.isLogin;
-    this.errorMessage = ''; // Setzt die Fehlermeldung zurück
+    this.errorMessage = ''; // Reset error message
+  
     if (this.isLogin) {
-      this.loginForm.removeControl('name');      // Entfernt das Name-Feld, wenn es sich um Login handelt
-      this.loginForm.removeControl('nachname');  // Entfernt das Nachname-Feld, wenn es sich um Login handelt
+      // Clear validators for 'name' and 'nachname' in login mode
+      this.loginForm.get('name')?.clearValidators();
+      this.loginForm.get('nachname')?.clearValidators();
     } else {
-      this.loginForm.addControl('name', this.fb.control('', Validators.required));  // Fügt das Name-Feld hinzu, wenn es sich um Registrierung handelt
-      this.loginForm.addControl('nachname', this.fb.control(''));                  // Fügt das Nachname-Feld hinzu, wenn es sich um Registrierung handelt
+      // Set validators for 'name' and optionally 'nachname' in register mode
+      this.loginForm.get('name')?.setValidators(Validators.required);
+      this.loginForm.get('nachname')?.setValidators([]);
     }
+  
+    // Update the validity of the form after changing validators
+    this.loginForm.updateValueAndValidity();
   }
+  
 }

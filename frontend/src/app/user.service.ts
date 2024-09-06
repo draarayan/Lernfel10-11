@@ -63,12 +63,13 @@ export class UserService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-
-    return this.http.delete<any>(`${this.apiUrl}/${userId}`, { headers }).pipe(
+  
+    // Antwort als Text behandeln
+    return this.http.delete(`${this.apiUrl}/${userId}`, { headers, responseType: 'text' }).pipe(
       catchError(this.handleError)  // Fehlerbehandlung
-      
     );
   }
+  
 
   // Meldet den Benutzer ab
   logoutUser(): Observable<void> {
