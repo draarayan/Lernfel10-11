@@ -15,8 +15,11 @@ export class UserService {
 
   // Registriert einen neuen Benutzer
   registerUser(user: { email: string, password: string, name?: string, nachname?: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
-      catchError(this.handleError)  // Fehlerbehandlung
+    return this.http.post<any>(`${this.apiUrl}/register`, user, { responseType: 'text' as 'json' }).pipe(
+      tap(response => {
+        alert('Sie haben sich erfolgreich registriert.');
+      }),
+      catchError(this.handleError)
     );
   }
 
