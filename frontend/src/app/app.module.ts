@@ -9,11 +9,14 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth.guard'; // Stelle sicher, dass der Pfad korrekt ist
 import { UserProfileViewComponent } from './user-profile-view/user-profile-view.component';
+import { EinkaufenComponent } from './einkaufen/einkaufen.component';
+import { FormsModule} from '@angular/forms';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'profile', component: UserProfileViewComponent, canActivate: [AuthGuard] }, // Füge die Profil-Route hinzu
+  { path: 'profile', component: UserProfileViewComponent, canActivate: [AuthGuard] },
+  { path: 'einkaufen', component: EinkaufenComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
@@ -21,12 +24,15 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    EinkaufenComponent,
+    UserProfileViewComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FormsModule, // Füge FormsModule hinzu
     RouterModule.forRoot(routes)
   ],
   providers: [],

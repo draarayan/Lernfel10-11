@@ -14,6 +14,11 @@ export class DashboardComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router) {}
 
+  goToEinkaufen(): void {
+    this.router.navigate(['/einkaufen']);
+  }
+
+
   ngOnInit(): void {
     this.currentDate = new Date().toLocaleDateString();  // Setze den Wert im `ngOnInit`
     this.userService.getUserProfile().subscribe({
