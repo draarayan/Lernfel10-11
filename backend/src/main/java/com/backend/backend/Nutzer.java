@@ -18,9 +18,9 @@ public class Nutzer {
     
     private String password;  
     
-    private String nachname; // Ändere description zu nachname
+    private String nachname; 
 
-    // Getter und Setter
+    
     public Long getId() {
         return id;
     }
