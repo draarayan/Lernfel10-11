@@ -30,6 +30,7 @@ export class EinkaufenComponent implements OnInit {
     this.loadUserProfile();
     this.loadEvents();
     this.loadMyRequests();
+    this.loadAnfragen();
   }
   loadAcceptedRequests(): void {
     this.anfrageService.getAcceptedRequests(this.userId).subscribe({
@@ -62,7 +63,7 @@ export class EinkaufenComponent implements OnInit {
 
         this.newEvent.createdBy = this.userName; // Setze den Ersteller für das neue Event
         this.newEvent.userId = this.userId;      // Setze die Benutzer-ID für das neue Event
-
+        this.loadMyRequests();
         this.loadAnfragen(); // Lade Anfragen, nachdem das Profil geladen wurde
       },
       error: (error) => {
@@ -111,8 +112,8 @@ export class EinkaufenComponent implements OnInit {
     if (this.userId !== 0) {
       this.anfrageService.getMyRequests(this.userId).subscribe({
         next: (requests) => {
-          console.log('Eigene Anfragen:', requests); // Debug-Log
           this.myRequests = requests;
+          console.log('Meine Anfragen:', this.myRequests);
         },
         error: (error) => {
           console.error('Fehler beim Laden der eigenen Anfragen:', error);
