@@ -11,16 +11,15 @@ public class Anfrage {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "event_id")  // Verbindung zur Event-Tabelle
     private Event event;
 
     private String requestedBy;
     private String requestItem;
-    private String status = "pending"; // pending, accepted, declined
+    private String status = "pending";
     private LocalDateTime createdAt = LocalDateTime.now();
 
     // Getter und Setter
-
     public Long getId() {
         return id;
     }
@@ -34,7 +33,7 @@ public class Anfrage {
     }
 
     public void setEvent(Event event) {
-        this.event = event;
+        this.event = event;  // Setze das Event-Objekt, um event_id zu speichern
     }
 
     public String getRequestedBy() {

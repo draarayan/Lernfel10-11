@@ -17,18 +17,17 @@ export class AnfrageService {
     return this.http.get<Anfrage[]>(`${this.apiUrl}/by-owner/${ownerId}`);
   }
 
-  // Neue Anfrage erstellen
-  createAnfrage(anfrage: Anfrage): Observable<Anfrage> {
-    return this.http.post<Anfrage>(this.apiUrl, anfrage);
-  }
+  createAnfrage(anfrage: Anfrage, eventId: number): Observable<Anfrage> {
+    return this.http.post<Anfrage>(`${this.apiUrl}?eventId=${eventId}`, anfrage);
+  }  
+  
 
-  // Anfrage bestätigen
   confirmAnfrage(anfrageId: number): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${anfrageId}/confirm`, {}); // Implementiere den Bestätigungs-Endpunkt im Backend
+    return this.http.post<void>(`${this.apiUrl}/${anfrageId}/confirm`, {});
   }
-
-  // Anfrage ablehnen
+  
   rejectAnfrage(anfrageId: number): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${anfrageId}/reject`, {}); // Implementiere den Ablehnungs-Endpunkt im Backend
+    return this.http.post<void>(`${this.apiUrl}/${anfrageId}/reject`, {});
   }
+  
 }

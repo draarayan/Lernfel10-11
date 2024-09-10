@@ -1,70 +1,72 @@
 <div class="einkaufen-container">
-    <h2 class="section-title">Einkaufs-Events</h2>
-  
-    <table class="events-table">
-      <thead>
-        <tr>
-          <th>Titel</th>
-          <th>Beschreibung</th>
-          <th>Erstellt von</th>
-          <th>Datum</th>
-          <th>Anfragen</th>
-          <th>Aktionen</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let event of events">
-          <td>{{ event.title }}</td>
-          <td>{{ event.description }}</td>
-          <td>{{ event.createdBy }}</td>
-          <td>{{ event.eventDate | date: 'shortDate' }}</td> <!-- Datum des Events anzeigen -->
-          <td *ngIf="event.id">
-            <textarea [(ngModel)]="requestText[event.id]" placeholder="Anfrage hinzufügen"></textarea>
-            <button class="btn btn-request" *ngIf="requestText[event.id]" (click)="requestItem(event.id, requestText[event.id])">Anfrage senden</button>
-          </td>
-          <td *ngIf="event.userId === userId">
-            <button *ngIf="event.id !== undefined" class="btn btn-danger" (click)="deleteEvent(event.id!)">Löschen</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <hr>
-  
-    <h2 class="section-title">Anfragen zu meinen Events</h2>
-  
-    <table class="anfragen-table">
-      <thead>
-        <tr>
-          <th>Event ID</th>
-          <th>Von</th>
-          <th>Artikel</th>
-          <th>Datum</th>
-          <th>Aktionen</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let anfrage of anfragen">
-          <td>{{ anfrage.eventId }}</td>
-          <td>{{ anfrage.requestedBy }}</td>
-          <td>{{ anfrage.requestItem }}</td>
-          <td>{{ anfrage.createdAt | date: 'short' }}</td>
-          <td>
-            <button class="btn btn-success" (click)="confirmAnfrage(anfrage.id!)">Bestätigen</button>
-            <button class="btn btn-warning" (click)="rejectAnfrage(anfrage.id!)">Ablehnen</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <hr>
-  
-    <div class="new-event-form">
-      <h3 class="section-title">Neues Einkaufs-Event erstellen</h3>
-      <input type="text" [(ngModel)]="newEvent.title" placeholder="Event-Titel" required />
-      <textarea [(ngModel)]="newEvent.description" placeholder="Event-Beschreibung"></textarea>
-      <input type="date" [(ngModel)]="newEvent.eventDate" required />
-      <button class="btn btn-create" (click)="createEvent()">Event erstellen</button>
-    </div>
+  <!-- Abschnitt für Einkaufs-Events -->
+  <h2 class="section-title">Einkaufs-Events</h2>
+
+  <table class="events-table">
+    <thead>
+      <tr>
+        <th>Titel</th>
+        <th>Beschreibung</th>
+        <th>Erstellt von</th>
+        <th>Datum</th>
+        <th>Anfragen</th>
+        <th>Aktionen</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let event of events">
+        <td>{{ event.title }}</td>
+        <td>{{ event.description }}</td>
+        <td>{{ event.createdBy }}</td>
+        <td>{{ event.eventDate | date: 'shortDate' }}</td> <!-- Event-Datum anzeigen -->
+        <td *ngIf="event.id">
+          <textarea [(ngModel)]="requestText[event.id]" placeholder="Anfrage hinzufügen"></textarea>
+          <button class="btn btn-request" *ngIf="requestText[event.id]" (click)="requestItem(event.id, requestText[event.id])">Anfrage senden</button>
+        </td>
+        <td *ngIf="event.userId === userId">
+          <button *ngIf="event.id !== undefined" class="btn btn-danger" (click)="deleteEvent(event.id!)">Löschen</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <!-- Abschnitt für Anfragen zu eigenen Events -->
+  <h2 class="section-title">Anfragen zu meinen Events</h2>
+
+  <table class="anfragen-table">
+    <thead>
+      <tr>
+        <th>Event ID</th>
+        <th>Von</th>
+        <th>Artikel</th>
+        <th>Datum</th>
+        <th>Aktionen</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let anfrage of anfragen">
+        <td>{{ anfrage.eventId }}</td>
+        <td>{{ anfrage.requestedBy }}</td>
+        <td>{{ anfrage.requestItem }}</td>
+        <td>{{ anfrage.createdAt | date: 'short' }}</td> <!-- Anfrage-Datum anzeigen -->
+        <td>
+          <button class="btn btn-success" (click)="confirmAnfrage(anfrage.id!)">Bestätigen</button>
+          <button class="btn btn-warning" (click)="rejectAnfrage(anfrage.id!)">Ablehnen</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <!-- Neues Event erstellen -->
+  <div class="new-event-form">
+    <h3 class="section-title">Neues Einkaufs-Event erstellen</h3>
+    <input type="text" [(ngModel)]="newEvent.title" placeholder="Event-Titel" required class="form-input" />
+    <textarea [(ngModel)]="newEvent.description" placeholder="Event-Beschreibung" class="form-textarea"></textarea>
+    <input type="date" [(ngModel)]="newEvent.eventDate" required class="form-input" />
+    <button class="btn btn-create" (click)="createEvent()">Event erstellen</button>
   </div>
-  
+</div>

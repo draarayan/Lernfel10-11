@@ -12,15 +12,17 @@ import { Event } from './event.model';
     constructor(private http: HttpClient) {}
   
     getEvents(): Observable<Event[]> {
-      return this.http.get<Event[]>(this.apiUrl);
+      return this.http.get<Event[]>('http://localhost:8080/api/events');  // Korrigiere die URL
     }
+    
   
     createEvent(event: Event): Observable<Event> {
       return this.http.post<Event>(this.apiUrl, event);
     }
   
     deleteEvent(eventId: number, userId: number): Observable<any> {
-      return this.http.delete(`${this.apiUrl}/${eventId}?userId=${userId}`);
+      return this.http.delete<any>(`${this.apiUrl}/${eventId}?userId=${userId}`);
     }
+    
   }
   

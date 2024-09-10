@@ -5,9 +5,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Event {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,13 +19,13 @@ public class Event {
     private String createdBy;
     private Long userId;
 
-    @Column(name = "event_date")  // Neues Feld für das benutzerdefinierte Event-Datum
+    @Column(name = "event_date")
     private LocalDate eventDate;
 
+    @JsonIgnore  // Ignoriere die Anfragen bei der Serialisierung
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Anfrage> anfragen = new ArrayList<>();
 
-    // Getter und Setter für eventDate
     public LocalDate getEventDate() {
         return eventDate;
     }
