@@ -1,5 +1,6 @@
 package com.backend.backend;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -10,16 +11,26 @@ public class Anfrage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    
     @ManyToOne
-    @JoinColumn(name = "event_id")  // Verbindung zur Event-Tabelle
+    @JoinColumn(name = "event_id")
+    @JsonBackReference // Verhindert zirkuläre Abhängigkeiten bei der Serialisierung
     private Event event;
 
+    private Long requestedByUserId;
     private String requestedBy;
     private String requestItem;
-    private String status = "pending";
+    private String status = "pending"; // Default status
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // Getter und Setter
+        public Long getRequestedByUserId() {
+        return requestedByUserId;
+    }
+
+    public void setRequestedByUserId(Long requestedByUserId) {
+        this.requestedByUserId = requestedByUserId;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -33,7 +44,7 @@ public class Anfrage {
     }
 
     public void setEvent(Event event) {
-        this.event = event;  // Setze das Event-Objekt, um event_id zu speichern
+        this.event = event;
     }
 
     public String getRequestedBy() {

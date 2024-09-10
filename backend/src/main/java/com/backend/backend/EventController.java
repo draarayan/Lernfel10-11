@@ -36,7 +36,6 @@ public class EventController {
         return eventRepository.save(event);
     }
 
-    // Delete-Methode zum Löschen eines Events anhand der eventId
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
         return eventRepository.findById(id)
@@ -46,5 +45,6 @@ public class EventController {
                 })
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Event nicht gefunden"));
     }
+    
 }
 

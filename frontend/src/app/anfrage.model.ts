@@ -6,4 +6,5 @@ export interface Anfrage {
   requestItem: string;
   status?: string; 
   createdAt?: string;
+  requestedByUserId?: number; 
 }

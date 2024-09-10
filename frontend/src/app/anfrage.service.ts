@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Anfrage } from './anfrage.model'; // Importiere das Anfrage-Modell
 
 @Injectable({
@@ -12,22 +13,63 @@ export class AnfrageService {
 
   constructor(private http: HttpClient) {}
 
-  // Anfragen für einen bestimmten Event-Ersteller laden
   getAnfragenByOwnerId(ownerId: number): Observable<Anfrage[]> {
-    return this.http.get<Anfrage[]>(`${this.apiUrl}/by-owner/${ownerId}`);
+    return this.http.get<Anfrage[]>(`${this.apiUrl}/by-owner/${ownerId}/active`).pipe(
+      catchError(this.handleError<Anfrage[]>('getAnfragenByOwnerId', []))
+    );
   }
-
-  createAnfrage(anfrage: Anfrage, eventId: number): Observable<Anfrage> {
-    return this.http.post<Anfrage>(`${this.apiUrl}?eventId=${eventId}`, anfrage);
-  }  
+  
+  
+  createAnfrage(anfrage: Anfrage, eventId: number, userId: number): Observable<Anfrage> {
+    return this.http.post<Anfrage>(`${this.apiUrl}/create?eventId=${eventId}&userId=${userId}`, anfrage)
+      .pipe(
+        catchError(this.handleError<Anfrage>('createAnfrage'))
+      );
+  }
+  
   
 
-  confirmAnfrage(anfrageId: number): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${anfrageId}/confirm`, {});
+  confirmAnfrage(anfrageId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${anfrageId}/confirm`, {}).pipe(
+      catchError(this.handleError('confirmAnfrage'))
+    );
+  }
+
+  rejectAnfrage(anfrageId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${anfrageId}/reject`, {}).pipe(
+      catchError(this.handleError('rejectAnfrage'))
+    );
+  }
+
+  deleteAnfrage(anfrageId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${anfrageId}`).pipe(
+      catchError(this.handleError('deleteAnfrage'))
+    );
+  }
+  getMyRequests(userId: number): Observable<Anfrage[]> {
+    return this.http.get<Anfrage[]>(`${this.apiUrl}/my-requests/${userId}`).pipe(
+      catchError(this.handleError<Anfrage[]>('getMyRequests', []))
+    );
   }
   
-  rejectAnfrage(anfrageId: number): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${anfrageId}/reject`, {});
+  getAcceptedRequests(userId: number): Observable<Anfrage[]> {
+    return this.http.get<Anfrage[]>(`${this.apiUrl}/by-user/${userId}/accepted`).pipe(
+      catchError(this.handleError<Anfrage[]>('getAcceptedRequests', []))
+    );
   }
   
+  getRejectedRequests(userId: number): Observable<Anfrage[]> {
+    return this.http.get<Anfrage[]>(`${this.apiUrl}/by-user/${userId}/rejected`).pipe(
+      catchError(this.handleError<Anfrage[]>('getRejectedRequests', []))
+    );
+  }
+  
+  
+  // Allgemeine Fehlerbehandlungsfunktion
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(`${operation} failed: ${error.message}`);
+      return of(result as T);
+    };
+  }
 }

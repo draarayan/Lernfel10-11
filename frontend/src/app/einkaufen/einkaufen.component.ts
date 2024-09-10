@@ -17,6 +17,8 @@ export class EinkaufenComponent implements OnInit {
   requestText: { [key: number]: string } = {};
   userName: string = '';
   userId: number = 0;
+  myRequests: Anfrage[] = [];
+  eventsMap: { [key: number]: string } = {};
 
   constructor(
     private eventService: EventService,
@@ -25,8 +27,30 @@ export class EinkaufenComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadUserProfile(); // Benutzerprofil laden
-    this.loadEvents();      // Events laden
+    this.loadUserProfile();
+    this.loadEvents();
+    this.loadMyRequests();
+  }
+  loadAcceptedRequests(): void {
+    this.anfrageService.getAcceptedRequests(this.userId).subscribe({
+      next: (requests) => {
+        this.myRequests = requests;
+      },
+      error: (error) => {
+        console.error('Fehler beim Laden der akzeptierten Anfragen:', error);
+      }
+    });
+  }
+  
+  loadRejectedRequests(): void {
+    this.anfrageService.getRejectedRequests(this.userId).subscribe({
+      next: (requests) => {
+        this.myRequests = requests;
+      },
+      error: (error) => {
+        console.error('Fehler beim Laden der abgelehnten Anfragen:', error);
+      }
+    });
   }
   
   // Lädt das Benutzerprofil
@@ -35,12 +59,11 @@ export class EinkaufenComponent implements OnInit {
       next: (profile) => {
         this.userName = profile.name;
         this.userId = profile.id;
-  
+
         this.newEvent.createdBy = this.userName; // Setze den Ersteller für das neue Event
         this.newEvent.userId = this.userId;      // Setze die Benutzer-ID für das neue Event
-  
-        // Lade die Anfragen nur, wenn die Benutzer-ID erfolgreich geladen wurde
-        this.loadAnfragen();
+
+        this.loadAnfragen(); // Lade Anfragen, nachdem das Profil geladen wurde
       },
       error: (error) => {
         console.error('Fehler beim Laden des Benutzerprofils:', error);
@@ -48,56 +71,77 @@ export class EinkaufenComponent implements OnInit {
     });
   }
 
-  deleteEvent(eventId: number): void {
-    const confirmation = confirm('Möchten Sie dieses Event wirklich löschen?');
-    if (confirmation) {
-      this.eventService.deleteEvent(eventId, this.userId).subscribe({
-        next: () => {
-          console.log(`Event mit ID ${eventId} erfolgreich gelöscht.`);
-          alert('Event erfolgreich gelöscht');
-          // Manuell das gelöschte Event aus der Liste entfernen
-          this.events = this.events.filter(event => event.id !== eventId);
-        },
-        error: (error) => {
-          if (error.status !== 200) {
-            console.error('Fehler beim Löschen des Events:', error);
-          } else {
-            this.loadEvents();
-          }
-        }
-      });
-    }
-  }
-  
-  loadEvents() {
+  // Lädt alle Events
+  loadEvents(): void {
     this.eventService.getEvents().subscribe({
-      next: (data) => {
-        this.events = data;
+      next: (events) => {
+        this.events = events;
+        events.forEach(event => {
+          // Überprüfe, ob event.id definiert ist, bevor es als Index verwendet wird
+          if (event.id !== undefined) {
+            this.eventsMap[event.id] = event.title;
+          } else {
+            console.warn('Event ohne ID gefunden:', event); // Fallback-Log für Events ohne ID
+          }
+        });
       },
-      error: (err) => {
-        console.error('Error loading events:', err);
+      error: (error) => {
+        console.error('Fehler beim Laden der Events:', error);
       }
     });
   }
   
 
-  // Lädt die Anfragen zu den Events des aktuellen Benutzers
   loadAnfragen(): void {
     if (this.userId !== 0) {
-      this.anfrageService.getAnfragenByOwnerId(this.userId).subscribe(anfragen => {
-        this.anfragen = anfragen;
+      this.anfrageService.getAnfragenByOwnerId(this.userId).subscribe({
+        next: (anfragen) => {
+          console.log('Active Requests:', anfragen);
+          this.anfragen = anfragen;
+        },
+        error: (error) => {
+          console.error('Fehler beim Laden der Anfragen:', error);
+        }
       });
     }
   }
+  
 
+  loadMyRequests(): void {
+    if (this.userId !== 0) {
+      this.anfrageService.getMyRequests(this.userId).subscribe({
+        next: (requests) => {
+          console.log('Eigene Anfragen:', requests); // Debug-Log
+          this.myRequests = requests;
+        },
+        error: (error) => {
+          console.error('Fehler beim Laden der eigenen Anfragen:', error);
+        }
+      });
+    }
+  }
+  
+
+
+  getEventTitle(eventId: number | undefined): string {
+    if (eventId === undefined) {
+      return 'Unbekanntes Event'; // Fallback, falls keine Event-ID existiert
+    }
+    return this.eventsMap[eventId] || 'Unbekanntes Event';
+  }
+  
   // Erstelle ein neues Event
   createEvent(): void {
     this.newEvent.createdBy = this.userName;
     this.newEvent.userId = this.userId;
-    this.eventService.createEvent(this.newEvent).subscribe(event => {
-      this.events.push(event);
-      // Event-Datum wird hier zurückgesetzt, um ein neues Event zu erstellen
-      this.newEvent = { title: '', description: '', createdBy: this.userName, userId: this.userId, eventDate: '' };
+    this.eventService.createEvent(this.newEvent).subscribe({
+      next: (event) => {
+        this.loadEvents(); // Events erneut laden, damit das neue Event angezeigt wird
+        this.newEvent = { title: '', description: '', createdBy: this.userName, userId: this.userId, eventDate: '' };
+      },
+      error: (error) => {
+        console.error('Fehler beim Erstellen des Events:', error);
+      }
     });
   }
 
@@ -108,16 +152,16 @@ export class EinkaufenComponent implements OnInit {
     }
   
     const anfrage: Anfrage = {
-      eventId: eventId, // Event ID hier hinzufügen
+      eventId: eventId,
       requestedBy: this.userName,
-      requestItem: requestText
+      requestItem: requestText,
+      requestedByUserId: this.userId
     };
   
-    // Übergib sowohl die Anfrage als auch die Event-ID
-    this.anfrageService.createAnfrage(anfrage, eventId).subscribe({
+    this.anfrageService.createAnfrage(anfrage, eventId, this.userId).subscribe({
       next: () => {
-        alert('Anfrage gesendet');
-        this.requestText[eventId] = ''; // Anfrage zurücksetzen
+        alert('Anfrage erfolgreich gesendet');
+        this.requestText[eventId] = ''; // Anfrage-Text zurücksetzen
       },
       error: (error) => {
         console.error('Fehler beim Senden der Anfrage:', error);
@@ -125,23 +169,46 @@ export class EinkaufenComponent implements OnInit {
     });
   }
   
-  
-  
 
-  
+
   // Anfrage bestätigen
   confirmAnfrage(anfrageId: number): void {
-    this.anfrageService.confirmAnfrage(anfrageId).subscribe(() => {
-      alert('Anfrage bestätigt');
-      this.loadAnfragen(); // Anfragen nach der Bestätigung erneut laden
+    this.anfrageService.confirmAnfrage(anfrageId).subscribe({
+      next: () => {
+        alert('Anfrage erfolgreich bestätigt');
+        this.loadAnfragen(); // Aktualisiere die Anfragen nach der Bestätigung
+      },
+      error: (error) => {
+        console.error('Fehler beim Bestätigen der Anfrage:', error);
+      }
     });
   }
 
   // Anfrage ablehnen
   rejectAnfrage(anfrageId: number): void {
-    this.anfrageService.rejectAnfrage(anfrageId).subscribe(() => {
-      alert('Anfrage abgelehnt');
-      this.loadAnfragen(); // Anfragen nach der Ablehnung erneut laden
+    this.anfrageService.rejectAnfrage(anfrageId).subscribe({
+      next: () => {
+        alert('Anfrage erfolgreich abgelehnt');
+        this.loadAnfragen(); // Aktualisiere die Anfragen nach der Ablehnung
+      },
+      error: (error) => {
+        console.error('Fehler beim Ablehnen der Anfrage:', error);
+      }
     });
+  }
+
+  // Event löschen
+  deleteEvent(eventId: number): void {
+    const confirmation = confirm('Möchten Sie dieses Event wirklich löschen?');
+    if (confirmation) {
+      this.eventService.deleteEvent(eventId, this.userId).subscribe({
+        next: () => {
+          this.loadEvents(); // Aktualisiere die Events nach dem Löschen
+        },
+        error: (error) => {
+          console.error('Fehler beim Löschen des Events:', error);
+        }
+      });
+    }
   }
 }

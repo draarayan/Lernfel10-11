@@ -69,4 +69,38 @@
     <input type="date" [(ngModel)]="newEvent.eventDate" required class="form-input" />
     <button class="btn btn-create" (click)="createEvent()">Event erstellen</button>
   </div>
+  <div class="your-requests-container">
+    <h2>Ihre Anfragen</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Event</th>
+          <th>Artikel</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let anfrage of myRequests">
+          <!-- Eventtitel anhand der Event-ID holen -->
+          <td>{{ getEventTitle(anfrage.eventId) }}</td>
+          <!-- Anfrage-Artikel anzeigen -->
+          <td>{{ anfrage.requestItem }}</td>
+          <!-- Status anzeigen -->
+          <td>
+            <ng-container *ngIf="anfrage.status === 'pending'">
+              <span class="status-label">Pending</span>
+            </ng-container>
+            <ng-container *ngIf="anfrage.status === 'accepted'">
+              <span class="status-label accepted">Accepted</span>
+            </ng-container>
+            <ng-container *ngIf="anfrage.status === 'rejected'">
+              <span class="status-label rejected">Rejected</span>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  
 </div>

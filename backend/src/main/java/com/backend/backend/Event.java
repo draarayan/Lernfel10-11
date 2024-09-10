@@ -1,15 +1,14 @@
 package com.backend.backend;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Event {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,10 +21,11 @@ public class Event {
     @Column(name = "event_date")
     private LocalDate eventDate;
 
-    @JsonIgnore  // Ignoriere die Anfragen bei der Serialisierung
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @JsonManagedReference // Verwalte die Beziehung, um Zirkularität zu vermeiden
     private List<Anfrage> anfragen = new ArrayList<>();
 
+    // Getter und Setter für eventDate
     public LocalDate getEventDate() {
         return eventDate;
     }
@@ -73,7 +73,6 @@ public class Event {
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
-
 
     public List<Anfrage> getAnfragen() {
         return anfragen;
