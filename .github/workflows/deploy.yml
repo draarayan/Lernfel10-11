@@ -50,21 +50,32 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    # Install Elastic Beanstalk CLI (EB CLI)
+    # Step 6: Install Elastic Beanstalk CLI (EB CLI)
     - name: Install EB CLI
       run: |
         pip install awsebcli --upgrade --user
         export PATH=$PATH:~/.local/bin
 
-    # Step 6: Build and Deploy Spring Boot to Elastic Beanstalk
+   # Step 7: Initialize Elastic Beanstalk environment
+    - name: Initialize EB environment
+      run: |
+        cd backend
+        eb init lf11 --platform java --region eu-north-1
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'eu-north-1'
+
+    # Step 8 :Build Spring Boot
     - name: Build Spring Boot
       run: |
         cd backend
         mvn clean install
 
-    # Step 7: Deploy Spring Boot to Elastic Beanstalk
+    # Step 9: Deploy Spring Boot to Elastic Beanstalk
     - name: Deploy Spring Boot to Elastic Beanstalk
       run: |
+        cd backend
         eb deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
