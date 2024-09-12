@@ -60,7 +60,7 @@ jobs:
     - name: Initialize EB environment
       run: |
         cd backend
-        eb init lf11 --platform java --region eu-north-1
+        eb init lf11 --platform "Corretto 17 running on 64bit Amazon Linux 2" --region eu-north-1
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
