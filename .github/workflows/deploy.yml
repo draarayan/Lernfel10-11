@@ -26,13 +26,20 @@ jobs:
         npm install
         npm run build --prod
     
-    # Step 3: Replace API Endpoints in Angular and Backend
+    # Step 3: Replace API Endpoints in Angular and Backend throughout the entire project
     - name: Replace Frontend and Backend URLs
       run: |
-        sed -i 's/localhost:4200/http:\/\/lf11.s3-website.eu-north-1.amazonaws.com/g' frontend/src/environments/environment.prod.ts
-        sed -i 's/localhost:8080/lf11.eu-north-1.elasticbeanstalk.com/g' frontend/src/environments/environment.prod.ts
-        sed -i 's/localhost:5432/database-1.creoew6qaqzn.eu-north-1.rds.amazonaws.com:5432/g' backend/src/main/resources/application.properties
-        sed -i 's/spring.datasource.password=.*/spring.datasource.password=postgres/g' backend/src/main/resources/application.properties
+        # Ersetze localhost:4200 durch die S3-URL in allen Dateien im gesamten Projekt
+        sed -i 's/localhost:4200/http:\/\/lf11.s3-website.eu-north-1.amazonaws.com/g' $(find . -type f)
+    
+        # Ersetze localhost:8080 durch die Elastic Beanstalk URL in allen Dateien im gesamten Projekt
+        sed -i 's/localhost:8080/http:\/\/lf11.eu-north-1.elasticbeanstalk.com/g' $(find . -type f)
+    
+        # Ersetze localhost:5432 durch die RDS-Datenbank-URL in allen Dateien im gesamten Projekt
+        sed -i 's/localhost:5432/database-1.creoew6qaqzn.eu-north-1.rds.amazonaws.com:5432/g' $(find . -type f)
+    
+        # Ersetze das Datenbank-Passwort in allen Dateien im gesamten Projekt
+        sed -i 's/spring.datasource.password=.*/spring.datasource.password=postgres/g' $(find . -type f)
 
     # Step 4: Upload Angular dist folder to S3
     - name: Upload Angular to S3
