@@ -33,7 +33,7 @@ export class EinkaufenComponent implements OnInit {
     this.loadMyRequests();
     this.loadAnfragen();
   }
-  loadAcceptedRequests(): void {
+  loadAcceptedRequests(): void { //wird noch nicht genutzt
     this.anfrageService.getAcceptedRequests(this.userId).subscribe({
       next: (requests) => {
         this.myRequests = requests;
@@ -44,7 +44,7 @@ export class EinkaufenComponent implements OnInit {
     });
   }
   
-  loadRejectedRequests(): void {
+  loadRejectedRequests(): void { //wird noch nicht genutzt
     this.anfrageService.getRejectedRequests(this.userId).subscribe({
       next: (requests) => {
         this.myRequests = requests;
