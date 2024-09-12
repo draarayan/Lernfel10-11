@@ -4,7 +4,7 @@ import { Event } from '../event.model';
 import { Anfrage } from '../anfrage.model';
 import { AnfrageService } from '../anfrage.service';
 import { UserService } from '../user.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-einkaufen',
   templateUrl: './einkaufen.component.html',
@@ -21,6 +21,7 @@ export class EinkaufenComponent implements OnInit {
   eventsMap: { [key: number]: string } = {};
 
   constructor(
+    private router: Router,
     private eventService: EventService,
     private anfrageService: AnfrageService,
     private userService: UserService
@@ -71,7 +72,9 @@ export class EinkaufenComponent implements OnInit {
       }
     });
   }
-
+  goToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
   // Lädt alle Events
   loadEvents(): void {
     this.eventService.getEvents().subscribe({
