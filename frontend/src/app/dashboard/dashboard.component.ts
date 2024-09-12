@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   events: any[] = [];
   filteredEvents: any[] = [];
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private eventService: EventService, private router: Router) {}
 
   goToEinkaufen(): void {
     this.router.navigate(['/einkaufen']);
