@@ -7,4 +7,3 @@ export interface Event {
   eventDate?: Date;
   plz: string;
 }
-  

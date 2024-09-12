@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { UserProfile } from '../user-profile.model'; // Importiere das Interface
+import { UserProfile } from '../user-profile.model'; 
 
 @Component({
   selector: 'app-user-profile-view',
@@ -10,7 +10,7 @@ import { UserProfile } from '../user-profile.model'; // Importiere das Interface
   styleUrls: ['./user-profile-view.component.css']
 })
 export class UserProfileViewComponent implements OnInit {
-  user: UserProfile = { id: 0, name: '', email: '', password: '', nachname: '' }; // Placeholder für Benutzerdaten
+  user: UserProfile = { id: 0, name: '', email: '', password: '', nachname: '' }; 
 
   constructor(private userService: UserService, private router: Router) {}
 
@@ -29,7 +29,7 @@ export class UserProfileViewComponent implements OnInit {
       },
       error: (error: HttpErrorResponse) => {
         console.error('Error loading user profile:', error);
-        if (error.status === 401) { // Unauthenticated
+        if (error.status === 401) { 
           this.router.navigate(['/login']);
         }
       }
@@ -38,9 +38,9 @@ export class UserProfileViewComponent implements OnInit {
 
   deleteAccount(): void {
     if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      const userId = this.user.id; // Holen der Benutzer-ID aus dem Profil
+      const userId = this.user.id; 
 
-      if (userId) { // Überprüfen, ob die Benutzer-ID vorhanden ist
+      if (userId) { 
         this.userService.deleteUser(userId).subscribe({
           next: () => {
             alert('Your account has been deleted successfully.');

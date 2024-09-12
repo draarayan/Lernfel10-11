@@ -25,10 +25,10 @@ public interface AnfrageRepository extends JpaRepository<Anfrage, Long> {
     // Finde alle angenommenen Anfragen eines Benutzers
     @Query("SELECT a FROM Anfrage a WHERE a.requestedByUserId = :userId AND a.status = 'accepted'")
     List<Anfrage> findAcceptedAnfragenByUserId(@Param("userId") Long userId);
-
+    // Finde alle abgelehnten Anfragen anhand des Owners
     @Query("SELECT a FROM Anfrage a WHERE a.event.userId = :ownerId AND a.status != 'rejected'")
     List<Anfrage> findActiveAnfragenByOwnerId(@Param("ownerId") Long ownerId);
-
+    //Finde alle Anfragen eines Users
     @Query("SELECT a FROM Anfrage a WHERE a.requestedByUserId = :userId")
     List<Anfrage> findByRequestedByUserId(@Param("userId") Long userId);
 }

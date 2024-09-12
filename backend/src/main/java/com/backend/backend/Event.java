@@ -23,10 +23,9 @@ public class Event {
     private LocalDate eventDate;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    @JsonManagedReference // Verwalte die Beziehung, um Zirkularität zu vermeiden
+    @JsonManagedReference 
     private List<Anfrage> anfragen = new ArrayList<>();
-
-    // Getter und Setter für eventDate
+    
     public LocalDate getEventDate() {
         return eventDate;
     }

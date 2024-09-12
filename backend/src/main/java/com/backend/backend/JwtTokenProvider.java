@@ -23,7 +23,6 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
-    // Token erstellen
     public String createToken(String username) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
@@ -32,7 +31,7 @@ public class JwtTokenProvider {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
-                .signWith(getSigningKey()) // Signatur mit HMAC-SHA Schlüssel
+                .signWith(getSigningKey())
                 .compact();
     }
 
@@ -47,8 +46,6 @@ public class JwtTokenProvider {
         return false;
     }
     
-
-    // Benutzername aus dem Token extrahieren
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())

@@ -17,13 +17,14 @@ export class DashboardComponent implements OnInit {
   events: any[] = [];
   filteredEvents: any[] = [];
 
-  constructor(
-    private userService: UserService,
-    private eventService: EventService,
-    private router: Router
-  ) {}
+  constructor(private userService: UserService, private router: Router) {}
+
+  goToEinkaufen(): void {
+    this.router.navigate(['/einkaufen']);
+  }
 
   ngOnInit(): void {
+
     this.currentDate = new Date().toLocaleDateString();
     this.userService.getUserProfile().subscribe({
       next: (profile) => {
@@ -71,9 +72,5 @@ export class DashboardComponent implements OnInit {
 
   goToUserProfile(): void {
     this.router.navigate(['/profile']);
-  }
-
-  goToEinkaufen(): void {
-    this.router.navigate(['/einkaufen']);
   }
 }

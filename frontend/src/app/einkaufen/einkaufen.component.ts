@@ -4,7 +4,7 @@ import { Event } from '../event.model';
 import { Anfrage } from '../anfrage.model';
 import { AnfrageService } from '../anfrage.service';
 import { UserService } from '../user.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-einkaufen',
   templateUrl: './einkaufen.component.html',
@@ -21,6 +21,7 @@ export class EinkaufenComponent implements OnInit {
   eventsMap: { [key: number]: string } = {};
 
   constructor(
+    private router: Router,
     private eventService: EventService,
     private anfrageService: AnfrageService,
     private userService: UserService
@@ -32,7 +33,7 @@ export class EinkaufenComponent implements OnInit {
     this.loadMyRequests();
     this.loadAnfragen();
   }
-  loadAcceptedRequests(): void {
+  loadAcceptedRequests(): void { //wird noch nicht genutzt
     this.anfrageService.getAcceptedRequests(this.userId).subscribe({
       next: (requests) => {
         this.myRequests = requests;
@@ -43,7 +44,7 @@ export class EinkaufenComponent implements OnInit {
     });
   }
   
-  loadRejectedRequests(): void {
+  loadRejectedRequests(): void { //wird noch nicht genutzt
     this.anfrageService.getRejectedRequests(this.userId).subscribe({
       next: (requests) => {
         this.myRequests = requests;
@@ -54,35 +55,36 @@ export class EinkaufenComponent implements OnInit {
     });
   }
   
-  // Lädt das Benutzerprofil
+
   loadUserProfile(): void {
     this.userService.getUserProfile().subscribe({
       next: (profile) => {
         this.userName = profile.name;
         this.userId = profile.id;
 
-        this.newEvent.createdBy = this.userName; // Setze den Ersteller für das neue Event
-        this.newEvent.userId = this.userId;      // Setze die Benutzer-ID für das neue Event
+        this.newEvent.createdBy = this.userName; 
+        this.newEvent.userId = this.userId;      
         this.loadMyRequests();
-        this.loadAnfragen(); // Lade Anfragen, nachdem das Profil geladen wurde
+        this.loadAnfragen(); 
       },
       error: (error) => {
         console.error('Fehler beim Laden des Benutzerprofils:', error);
       }
     });
   }
-
-  // Lädt alle Events
+  goToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
+  
   loadEvents(): void {
     this.eventService.getEvents().subscribe({
       next: (events) => {
         this.events = events;
         events.forEach(event => {
-          // Überprüfe, ob event.id definiert ist, bevor es als Index verwendet wird
           if (event.id !== undefined) {
             this.eventsMap[event.id] = event.title;
           } else {
-            console.warn('Event ohne ID gefunden:', event); // Fallback-Log für Events ohne ID
+            console.warn('Event ohne ID gefunden:', event); 
           }
         });
       },
@@ -126,18 +128,18 @@ export class EinkaufenComponent implements OnInit {
 
   getEventTitle(eventId: number | undefined): string {
     if (eventId === undefined) {
-      return 'Unbekanntes Event'; // Fallback, falls keine Event-ID existiert
+      return 'Unbekanntes Event'; 
     }
     return this.eventsMap[eventId] || 'Unbekanntes Event';
   }
   
-  // Erstelle ein neues Event
+  
   createEvent(): void {
     this.newEvent.createdBy = this.userName;
     this.newEvent.userId = this.userId;
     this.eventService.createEvent(this.newEvent).subscribe({
       next: (event) => {
-        this.loadEvents(); // Events erneut laden, damit das neue Event angezeigt wird
+        this.loadEvents();
         this.newEvent = { title: '', description: '', createdBy: this.userName, userId: this.userId, eventDate: new Date(), plz: '' };
       },
       error: (error) => {
@@ -162,7 +164,7 @@ export class EinkaufenComponent implements OnInit {
     this.anfrageService.createAnfrage(anfrage, eventId, this.userId).subscribe({
       next: () => {
         alert('Anfrage erfolgreich gesendet');
-        this.requestText[eventId] = ''; // Anfrage-Text zurücksetzen
+        this.requestText[eventId] = ''; 
       },
       error: (error) => {
         console.error('Fehler beim Senden der Anfrage:', error);
@@ -172,12 +174,12 @@ export class EinkaufenComponent implements OnInit {
   
 
 
-  // Anfrage bestätigen
+  
   confirmAnfrage(anfrageId: number): void {
     this.anfrageService.confirmAnfrage(anfrageId).subscribe({
       next: () => {
         alert('Anfrage erfolgreich bestätigt');
-        this.loadAnfragen(); // Aktualisiere die Anfragen nach der Bestätigung
+        this.loadAnfragen(); 
       },
       error: (error) => {
         console.error('Fehler beim Bestätigen der Anfrage:', error);
@@ -185,12 +187,12 @@ export class EinkaufenComponent implements OnInit {
     });
   }
 
-  // Anfrage ablehnen
+  
   rejectAnfrage(anfrageId: number): void {
     this.anfrageService.rejectAnfrage(anfrageId).subscribe({
       next: () => {
         alert('Anfrage erfolgreich abgelehnt');
-        this.loadAnfragen(); // Aktualisiere die Anfragen nach der Ablehnung
+        this.loadAnfragen(); 
       },
       error: (error) => {
         console.error('Fehler beim Ablehnen der Anfrage:', error);
@@ -198,13 +200,13 @@ export class EinkaufenComponent implements OnInit {
     });
   }
 
-  // Event löschen
+  
   deleteEvent(eventId: number): void {
     const confirmation = confirm('Möchten Sie dieses Event wirklich löschen?');
     if (confirmation) {
       this.eventService.deleteEvent(eventId, this.userId).subscribe({
         next: () => {
-          this.loadEvents(); // Aktualisiere die Events nach dem Löschen
+          this.loadEvents(); 
         },
         error: (error) => {
           console.error('Fehler beim Löschen des Events:', error);

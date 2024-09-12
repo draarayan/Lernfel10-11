@@ -1,5 +1,4 @@
 <div class="einkaufen-container">
-  <!-- Abschnitt für Einkaufs-Events -->
   <h2 class="section-title">Einkaufs-Events</h2>
 
   <table class="events-table">
@@ -18,7 +17,7 @@
         <td>{{ event.title }}</td>
         <td>{{ event.description }}</td>
         <td>{{ event.createdBy }}</td>
-        <td>{{ event.eventDate | date: 'shortDate' }}</td> <!-- Event-Datum anzeigen -->
+        <td>{{ event.eventDate | date: 'shortDate' }}</td> 
         <td *ngIf="event.id">
           <textarea [(ngModel)]="requestText[event.id]" placeholder="Anfrage hinzufügen"></textarea>
           <button class="btn btn-request" *ngIf="requestText[event.id]" (click)="requestItem(event.id, requestText[event.id])">Anfrage senden</button>
@@ -32,7 +31,7 @@
 
   <hr>
 
-  <!-- Abschnitt für Anfragen zu eigenen Events -->
+  
   <h2 class="section-title">Anfragen zu meinen Events</h2>
 
   <table class="anfragen-table">
@@ -61,7 +60,7 @@
 
   <hr>
 
-  <!-- Neues Event erstellen -->
+  
   <div class="new-event-form">
     <h3 class="section-title">Neues Einkaufs-Event erstellen</h3>
     <input type="text" [(ngModel)]="newEvent.title" placeholder="Event-Titel" required class="form-input" />
@@ -96,6 +95,7 @@
       
     </tbody>
   </table>
+  <button (click)="goToDashboard()">Zurück zum Dashboard</button>
 </div>
 
 </div>
