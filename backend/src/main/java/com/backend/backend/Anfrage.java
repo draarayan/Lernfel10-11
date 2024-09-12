@@ -14,13 +14,13 @@ public class Anfrage {
     
     @ManyToOne
     @JoinColumn(name = "event_id")
-    @JsonBackReference // Verhindert zirkuläre Abhängigkeiten bei der Serialisierung
+    @JsonBackReference 
     private Event event;
 
     private Long requestedByUserId;
     private String requestedBy;
     private String requestItem;
-    private String status = "pending"; // Default status
+    private String status = "pending"; 
     private LocalDateTime createdAt = LocalDateTime.now();
 
         public Long getRequestedByUserId() {

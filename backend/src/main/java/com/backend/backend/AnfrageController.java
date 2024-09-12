@@ -32,17 +32,11 @@ public class AnfrageController {
 
     @PostMapping("/create")
     public ResponseEntity<Anfrage> createAnfrage(@RequestBody Anfrage anfrage, @RequestParam Long eventId, @RequestParam Long userId) {
-        // Finde das Event anhand der eventId
         Event event = eventRepository.findById(eventId)
             .orElseThrow(() -> new IllegalArgumentException("Event nicht gefunden mit ID: " + eventId));
 
-        // Setze das Event in der Anfrage
         anfrage.setEvent(event);
-
-        // Setze die User-ID des Benutzers, der die Anfrage erstellt
         anfrage.setRequestedByUserId(userId);
-
-        // Speichere die Anfrage in der Datenbank
         Anfrage savedAnfrage = anfrageRepository.save(anfrage);
 
         return ResponseEntity.ok(savedAnfrage);
@@ -61,13 +55,9 @@ public class AnfrageController {
     public ResponseEntity<?> deleteAnfrage(@PathVariable Long anfrageId, @RequestParam Long userId) {
         Anfrage anfrage = anfrageRepository.findById(anfrageId)
                 .orElseThrow(() -> new IllegalArgumentException("Anfrage nicht gefunden: " + anfrageId));
-    
-        // Nur der Ersteller des Events darf akzeptierte Anfragen löschen
         if ("accepted".equals(anfrage.getStatus()) && !anfrage.getEvent().getUserId().equals(userId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Nur der Ersteller kann akzeptierte Anfragen löschen");
-        }
-    
-        // Anfragen können gelöscht werden, wenn sie nicht akzeptiert sind oder der Event-Ersteller die Anfrage löscht
+        }// noch nicht im Frontend implementiert
         anfrageRepository.delete(anfrage);
         return ResponseEntity.ok().build();
     }

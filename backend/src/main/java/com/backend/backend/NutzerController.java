@@ -63,7 +63,7 @@ public class NutzerController {
             userService.save(user);
             return ResponseEntity.ok("Benutzer erfolgreich registriert");
         } catch (Exception e) {
-            e.printStackTrace(); // Ausgabe des Stacktraces zur Fehlersuche
+            e.printStackTrace(); 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Fehler beim Anlegen des Benutzers: " + e.getMessage());
         }
@@ -73,8 +73,8 @@ public class NutzerController {
     public ResponseEntity<?> loginUser(@RequestBody Nutzer user) {
         Optional<Nutzer> existingUser = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
         if (existingUser.isPresent()) {
-            String token = jwtTokenProvider.createToken(user.getEmail());  // JWT Token generieren
-            return ResponseEntity.ok(Map.of("token", token));  // Token in der Antwort senden
+            String token = jwtTokenProvider.createToken(user.getEmail());  
+            return ResponseEntity.ok(Map.of("token", token));  
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Ungültige Anmeldedaten");
         }
@@ -93,7 +93,7 @@ public ResponseEntity<String> deleteUser(@PathVariable Long id) {
                                  .body("Benutzer nicht gefunden");
         }
     } catch (Exception e) {
-        e.printStackTrace(); // Stacktrace für die Fehlersuche
+        e.printStackTrace(); 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                              .body("Fehler beim Löschen des Benutzers: " + e.getMessage());
     }
