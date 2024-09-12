@@ -1,0 +1,84 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    # Step 1: Set up Node.js for Angular
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.17'
+      
+    # Step 2: Install Angular Dependencies
+    - name: Install Dependencies and Build Angular
+      run: |
+        cd frontend
+        npm install
+        npm run build --prod
+    
+    # Step 3: Replace API Endpoints in Angular and Backend
+    - name: Replace Frontend and Backend URLs
+      run: |
+        sed -i 's/localhost:4200/http:\/\/lf11.s3-website.eu-north-1.amazonaws.com/g' frontend/src/environments/environment.prod.ts
+        sed -i 's/localhost:8080/lf11.eu-north-1.elasticbeanstalk.com/g' frontend/src/environments/environment.prod.ts
+        sed -i 's/localhost:5432/database-1.creoew6qaqzn.eu-north-1.rds.amazonaws.com:5432/g' backend/src/main/resources/application.properties
+        sed -i 's/spring.datasource.password=.*/spring.datasource.password=postgres/g' backend/src/main/resources/application.properties
+
+    # Step 4: Upload Angular dist folder to S3
+    - name: Upload Angular to S3
+      run: |
+        aws s3 sync frontend/dist/frontend/ s3://lf11 --delete
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'eu-north-1'
+
+    # Step 5: Set up Java for Spring Boot
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    # Step 6: Install Elastic Beanstalk CLI (EB CLI)
+    - name: Install EB CLI
+      run: |
+        pip install awsebcli --upgrade --user
+        export PATH=$PATH:~/.local/bin
+
+   # Step 7: Initialize Elastic Beanstalk environment
+    - name: Initialize EB environment
+      run: |
+        cd backend
+        eb init lf11 --platform "Corretto 17 running on 64bit Amazon Linux 2" --region eu-north-1
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'eu-north-1'
+
+    # Step 8: Build Spring Boot and verify JAR file
+    - name: Build Spring Boot
+      run: |
+        cd backend
+        mvn clean install
+        ls target/*.jar # Verifiziere, dass das JAR vorhanden ist
+
+    # Step 9: Deploy Spring Boot to Elastic Beanstalk
+    - name: Deploy Spring Boot to Elastic Beanstalk
+      run: |
+        cd backend
+        eb deploy --staged
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'eu-north-1'
