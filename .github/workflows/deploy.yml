@@ -24,7 +24,7 @@ jobs:
       run: |
         cd frontend
         npm install
-        ng build
+        npm run build --prod
     
     # Step 3: Replace API Endpoints in Angular and Backend
     - name: Replace Frontend and Backend URLs
