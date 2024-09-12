@@ -50,6 +50,12 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    # Install Elastic Beanstalk CLI (EB CLI)
+    - name: Install EB CLI
+      run: |
+        pip install awsebcli --upgrade --user
+        export PATH=$PATH:~/.local/bin
+
     # Step 6: Build and Deploy Spring Boot to Elastic Beanstalk
     - name: Build Spring Boot
       run: |
