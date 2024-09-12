@@ -13,7 +13,7 @@ import { UserService } from '../user.service';
 export class EinkaufenComponent implements OnInit {
   events: Event[] = [];
   anfragen: Anfrage[] = [];
-  newEvent: Event = { title: '', description: '', createdBy: '', userId: 0, eventDate: '' };
+  newEvent: Event = { title: '', description: '', createdBy: '', userId: 0,   plz: '', eventDate:  new Date() };
   requestText: { [key: number]: string } = {};
   userName: string = '';
   userId: number = 0;
@@ -138,7 +138,7 @@ export class EinkaufenComponent implements OnInit {
     this.eventService.createEvent(this.newEvent).subscribe({
       next: (event) => {
         this.loadEvents(); // Events erneut laden, damit das neue Event angezeigt wird
-        this.newEvent = { title: '', description: '', createdBy: this.userName, userId: this.userId, eventDate: '' };
+        this.newEvent = { title: '', description: '', createdBy: this.userName, userId: this.userId, eventDate: new Date(), plz: '' };
       },
       error: (error) => {
         console.error('Fehler beim Erstellen des Events:', error);

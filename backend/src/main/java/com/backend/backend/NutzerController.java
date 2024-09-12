@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.backend.backend.repository.EventRepository;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.security.Principal;
@@ -19,6 +21,14 @@ public class NutzerController {
 
     @Autowired
     private final NutzerService userService;
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @GetMapping("/events/filter/{plz}")
+    public List<Event> getEventsByPlz(@PathVariable String plz) {
+    return eventRepository.findByPlz(plz);
+    }
 
     public NutzerController(NutzerService userService) {
         this.userService = userService;
@@ -98,5 +108,4 @@ public ResponseEntity<String> deleteUser(@PathVariable Long id) {
                              .body("Fehler beim Löschen des Benutzers: " + e.getMessage());
     }
 }
-
 }
