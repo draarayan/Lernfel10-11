@@ -13,7 +13,7 @@ export class UserService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  
+
   registerUser(user: { email: string, password: string, name?: string, nachname?: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, user, { responseType: 'text' as 'json' }).pipe(
       tap(response => {
@@ -22,6 +22,7 @@ export class UserService {
       catchError(this.handleError)
     );
   }
+  
 
   
   loginUser(user: { email: string, password: string }): Observable<any> {
