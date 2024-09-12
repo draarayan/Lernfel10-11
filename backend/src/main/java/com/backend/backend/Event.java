@@ -17,6 +17,7 @@ public class Event {
     private String description;
     private String createdBy;
     private Long userId;
+    private String plz;
 
     @Column(name = "event_date")
     private LocalDate eventDate;
@@ -79,5 +80,13 @@ public class Event {
 
     public void setAnfragen(List<Anfrage> anfragen) {
         this.anfragen = anfragen;
+    }
+
+    public String getPlz() {
+        return plz;
+    }
+
+    public void setPlz(String plz) {
+        this.plz = plz;
     }
 }
