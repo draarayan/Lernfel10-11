@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Anfrage } from './anfrage.model'; // Importiere das Anfrage-Modell
+import { Anfrage } from './anfrage.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnfrageService {
 
-  private apiUrl = 'http://localhost:8080/api/anfragen'; // Backend-Endpunkt für Anfragen
+  private apiUrl = 'http://localhost:8080/api/anfragen';
 
   constructor(private http: HttpClient) {}
 
@@ -65,7 +65,6 @@ export class AnfrageService {
   }
   
   
-  // Allgemeine Fehlerbehandlungsfunktion
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(`${operation} failed: ${error.message}`);

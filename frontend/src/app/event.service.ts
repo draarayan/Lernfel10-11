@@ -7,12 +7,12 @@ import { Event } from './event.model';
     providedIn: 'root'
   })
   export class EventService {
-    private apiUrl = 'http://localhost:8080/api/events'; // Backend-Endpunkt
+    private apiUrl = 'http://localhost:8080/api/events'; 
   
     constructor(private http: HttpClient) {}
   
     getEvents(): Observable<Event[]> {
-      return this.http.get<Event[]>('http://localhost:8080/api/events');  // Korrigiere die URL
+      return this.http.get<Event[]>('http://localhost:8080/api/events'); 
     }
     
   

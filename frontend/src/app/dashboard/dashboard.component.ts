@@ -9,8 +9,8 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  currentDate: string = '';  // Initialisiere mit einem leeren String
-  userName: string = '';    // Optional: Initialisiere auch `userName`
+  currentDate: string = '';  
+  userName: string = '';    
 
   constructor(private userService: UserService, private router: Router) {}
 
@@ -20,14 +20,13 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.currentDate = new Date().toLocaleDateString();  // Setze den Wert im `ngOnInit`
+    this.currentDate = new Date().toLocaleDateString();  
     this.userService.getUserProfile().subscribe({
       next: (profile) => {
-        this.userName = profile.name; // Hier den Namen aus dem Profil setzen
+        this.userName = profile.name; 
       },
       error: (error: HttpErrorResponse) => {
         console.error('Fehler beim Laden des Benutzerprofils:', error);
-        // Eventuell Weiterleitung zur Login-Seite, wenn das Profil nicht geladen werden kann
         this.router.navigate(['/login']);
       }
     });
@@ -36,7 +35,7 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/profile']);
   }
   logout(): void {
-    this.userService.logoutUser(); // Logout-Methode im UserService aufrufen
-    this.router.navigate(['/login']); // Nach dem Logout zur Login-Seite navigieren
+    this.userService.logoutUser(); 
+    this.router.navigate(['/login']); 
   }
 }

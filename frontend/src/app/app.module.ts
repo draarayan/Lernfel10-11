@@ -7,7 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AuthGuard } from './auth.guard'; // Stelle sicher, dass der Pfad korrekt ist
+import { AuthGuard } from './auth.guard'; 
 import { UserProfileViewComponent } from './user-profile-view/user-profile-view.component';
 import { EinkaufenComponent } from './einkaufen/einkaufen.component';
 import { FormsModule} from '@angular/forms';
@@ -32,7 +32,7 @@ const routes: Routes = [
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule, // Füge FormsModule hinzu
+    FormsModule, 
     RouterModule.forRoot(routes)
   ],
   providers: [],

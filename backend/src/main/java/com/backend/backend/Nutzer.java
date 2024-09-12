@@ -53,7 +53,7 @@ public class Nutzer {
         this.password = password;
     }
 
-    public String getNachname() { // Ändere die Getter/Setter-Methoden
+    public String getNachname() { 
         return nachname;
     }
 

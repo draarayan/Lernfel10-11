@@ -11,20 +11,20 @@ import { UserService } from '../user.service';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  isLogin: boolean = true;  // Bestimmt, ob es sich um Login oder Registrierung handelt
-  errorMessage: string = ''; // Variable zur Anzeige von Fehlermeldungen
+  isLogin: boolean = true;  
+  errorMessage: string = ''; 
 
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
     private router: Router
   ) {
-    // Erstelle das Formular mit Validierungen
+    
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]], // Email-Validierung
-      password: ['', Validators.required],                  // Passwort ist erforderlich
-      name: [''],                                           // Name ist optional beim Login
-      nachname: ['']                                        // Nachname ist optional beim Login
+      email: ['', [Validators.required, Validators.email]], 
+      password: ['', Validators.required],                  
+      name: [''],                                           
+      nachname: ['']                                        
     });
   }
 
@@ -32,7 +32,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const { email, password, name, nachname } = this.loginForm.value;
 
-      // Prüfe, ob der Benutzer sich einloggt oder registriert
+      
       if (this.isLogin) {
         this.userService.loginUser({ email, password })
           .subscribe({
@@ -79,22 +79,18 @@ export class LoginComponent {
     }
   }
 
-  // Wechsel zwischen Login und Registrierung
+  
   toggleMode(): void {
     this.isLogin = !this.isLogin;
-    this.errorMessage = ''; // Reset error message
+    this.errorMessage = ''; 
   
     if (this.isLogin) {
-      // Clear validators for 'name' and 'nachname' in login mode
       this.loginForm.get('name')?.clearValidators();
       this.loginForm.get('nachname')?.clearValidators();
     } else {
-      // Set validators for 'name' and optionally 'nachname' in register mode
       this.loginForm.get('name')?.setValidators(Validators.required);
-      this.loginForm.get('nachname')?.setValidators([]);
+      this.loginForm.get('nachname')?.setValidators(Validators.required);
     }
-  
-    // Update the validity of the form after changing validators
     this.loginForm.updateValueAndValidity();
   }
   
