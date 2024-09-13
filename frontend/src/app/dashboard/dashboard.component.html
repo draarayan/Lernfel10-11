@@ -40,13 +40,12 @@
         <p>PLZ: {{ event.plz }}</p>
       </div>
     </div>
-
-  <!-- Footer with Logout and Navigation -->
-  <div style="text-align: center;">
-    <button (click)="logout()">Logout</button>
-    <button (click)="goToUserProfile()">Go to User Profile</button>
-    <button (click)="goToEinkaufen()">Einkaufen</button>
-    <p>Aktuelles Datum: {{ currentDate }}</p>
-    <p>Benutzername: {{ userName }}</p>
+    <div class="footer">
+      <div class="buttons">
+        <button (click)="logout()">Logout</button>
+        <button (click)="goToUserProfile()">Go to User Profile</button>
+        <button (click)="goToEinkaufen()">Einkaufen</button>
+      </div>
+    </div>
   </div>
 </div>
