@@ -1,10 +1,10 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   background-color: #f5f5f5; /* Soft background */
-  padding: 20px;
+  padding: 2%;
   margin: 0;
 }
 
@@ -12,7 +12,6 @@
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
-  background-color: #f0f1f2; /* Lighter grey header */
   border-bottom: 1px solid #ddd; /* Subtle border */
   font-size: 14px;
   color: #777; /* Lighter text color */
@@ -23,43 +22,38 @@
 }
 
 .main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   flex: 1;
-  padding: 20px;
-  background-color: #fff; /* White for the main card area */
+  padding: 2%;
+  background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
-  border-radius: 8px;
-  margin-bottom: 20px;
+  border-radius: 10px;
 }
 
 h1 {
   font-size: 24px;
-  color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 1%;
 }
 
 h2 {
   font-size: 20px;
-  color: #333;
   margin-bottom: 15px;
 }
 
 button {
-  background-color: #76c7c0; /* Matching green button color */
+  background-color: rgb(20, 200, 50);
   color: white;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
   font-size: 16px;
-  margin-top: 10px;
-  border-radius: 5px;
+  border-radius: 20px;
 }
 
 button:hover {
-  background-color: #5ab5a5; /* Darker hover state */
-}
-
-.create-event, .filter-events, .event-list {
-  margin-bottom: 20px;
+  background-color: #5ab5a5;
 }
 
 input, textarea {
@@ -75,14 +69,13 @@ input, textarea {
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
   display: flex;
   align-items: center;
 }
 
 .event-list .event-item h3 {
   font-size: 18px;
-  color: #333;
   flex: 1;
 }
 
@@ -91,9 +84,14 @@ input, textarea {
   color: #777;
 }
 
-.footer {
-  text-align: center;
-  font-size: 14px;
-  color: #666;
-  padding: 10px;
+.buttons{
+  min-width: 20%;
+  max-width: fit-content;
+  display: flex;
+}
+
+.footer{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
