@@ -9,11 +9,11 @@ import { UserProfile } from './user-profile.model';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080/api/users'; 
+  private apiUrl = 'http://localhost:8080/api/users'; // Basis-URL der API
 
   constructor(private http: HttpClient, private router: Router) {}
 
-
+  // Methode zum Registrieren eines neuen Benutzers
   registerUser(user: { email: string, password: string, name?: string, nachname?: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, user, { responseType: 'text' as 'json' }).pipe(
       tap(response => {
@@ -22,9 +22,8 @@ export class UserService {
       catchError(this.handleError)
     );
   }
-  
 
-  
+  // Methode zum Anmelden eines Benutzers
   loginUser(user: { email: string, password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, user).pipe(
       tap(response => {
@@ -38,12 +37,12 @@ export class UserService {
     );
   }
 
-  
+  // Prüft, ob ein Benutzer angemeldet ist
   isLoggedIn(): boolean {
     return !!localStorage.getItem('authToken');
   }
 
-  
+  // Profil des Benutzers abrufen
   getUserProfile(): Observable<UserProfile> {
     const token = this.getToken();
     if (!token) {
@@ -58,7 +57,7 @@ export class UserService {
     );
   }
 
- 
+  // Benutzer löschen
   deleteUser(userId: number): Observable<any> {
     const token = this.getToken();
     if (!token) {
@@ -72,8 +71,24 @@ export class UserService {
       catchError(this.handleError) 
     );
   }
-  
 
+  // Passwort ändern
+  changePassword(payload: { currentPassword: string, newPassword: string }): Observable<void> {
+    const token = this.getToken();
+    if (!token) {
+      return throwError(() => new Error('Authentication token not found'));
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.put<void>(`${this.apiUrl}/change-password`, payload, { headers, responseType: 'text' as 'json' }).pipe(
+      catchError(this.handleError)
+    );
+    
+  }
+
+  // Benutzer abmelden
   logoutUser(): Observable<void> {
     localStorage.removeItem('authToken');
     return new Observable<void>(observer => {
@@ -83,11 +98,12 @@ export class UserService {
     });
   }
 
+  // Hilfsmethode, um das Authentifizierungstoken abzurufen
   private getToken(): string | null {
     return localStorage.getItem('authToken');
   }
 
- 
+  // Fehlerbehandlung
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Etwas ist schiefgelaufen';
 
@@ -102,5 +118,4 @@ export class UserService {
     }
     return throwError(() => new Error(errorMessage));
   }
-  
 }

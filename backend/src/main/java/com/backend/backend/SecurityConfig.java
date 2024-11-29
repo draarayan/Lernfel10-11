@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .requestMatchers(org.springframework.http.HttpMethod.DELETE,"/**").permitAll()
                 .requestMatchers(org.springframework.http.HttpMethod.POST,"/**").permitAll()
                 .requestMatchers(org.springframework.http.HttpMethod.GET,"/**").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.PUT,"/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

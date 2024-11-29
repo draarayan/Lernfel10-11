@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.backend.backend.dto.PasswordChangeRequest;
 import com.backend.backend.repository.EventRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -108,4 +108,33 @@ public ResponseEntity<String> deleteUser(@PathVariable Long id) {
                              .body("Fehler beim Löschen des Benutzers: " + e.getMessage());
     }
 }
+@CrossOrigin(origins = "http://localhost:4200")
+@PutMapping("/change-password")
+public ResponseEntity<String> changePassword(HttpServletRequest request, @RequestBody Map<String, String> passwords) {
+    Principal principal = request.getUserPrincipal();
+    if (principal == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Benutzer nicht authentifiziert");
+    }
+
+    String email = principal.getName();
+    String currentPassword = passwords.get("currentPassword");
+    String newPassword = passwords.get("newPassword");
+
+    if (currentPassword == null || newPassword == null) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fehlende Passwortinformationen");
+    }
+
+    try {
+        
+        userService.changePassword(email, currentPassword, newPassword);
+        return ResponseEntity.ok("Passwort erfolgreich geändert");
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Fehler beim Ändern des Passworts: " + e.getMessage());
+    }
 }
+}
+
