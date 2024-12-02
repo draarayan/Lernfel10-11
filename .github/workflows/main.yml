@@ -46,9 +46,11 @@ jobs:
 
       - name: Build Backend
         run: mvn -B clean install -DskipTests
+        working-directory: backend
 
       - name: Run Unit Tests
         run: mvn test
+        working-directory: backend
 
       - name: Run Integration Tests
         env:
@@ -56,3 +58,4 @@ jobs:
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: postgres
         run: mvn verify
+        working-directory: backend
