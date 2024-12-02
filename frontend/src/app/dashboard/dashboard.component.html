@@ -9,20 +9,30 @@
   <div class="main-content">
     <h1>Veranstaltungen</h1>
 
-    <!-- Event Creation Form -->
-    <div class="create-event">
-      <h2>Neues Event erstellen</h2>
-      <label for="title">Titel:</label>
-      <input id="title" type="text" [(ngModel)]="newEvent.title" placeholder="Event Titel">
-      
-      <label for="description">Beschreibung:</label>
-      <textarea id="description" [(ngModel)]="newEvent.description" placeholder="Event Beschreibung"></textarea>
-      
-      <label for="plz">PLZ:</label>
-      <input id="plz" type="text" [(ngModel)]="newEvent.plz" placeholder="PLZ">
-      
-      <button (click)="createEvent()">Event Erstellen</button>
-    </div>
+<!-- Event Creation Form -->
+<div class="create-event">
+  <h2>Neues Event erstellen</h2>
+  
+  <label for="title">Titel:</label>
+  <input id="title" type="text" [(ngModel)]="newEvent.title" placeholder="Event Titel">
+  
+  <label for="description">Beschreibung:</label>
+  <textarea id="description" [(ngModel)]="newEvent.description" placeholder="Event Beschreibung"></textarea>
+  
+  <label for="plz">PLZ:</label>
+  <input id="plz" type="text" [(ngModel)]="newEvent.plz" placeholder="PLZ">
+
+  <!-- Dropdown für Event-Typ -->
+  <label for="eventType">Event-Typ:</label>
+  <select id="eventType" [(ngModel)]="selectedEventType">
+    <option value="">Bitte auswählen</option>
+    <option *ngFor="let type of eventTypes" [value]="type.name">
+      {{ type.name }}
+    </option>
+  </select>
+
+  <button (click)="createEvent()">Event Erstellen</button>
+</div>
 
     <!-- Event Filter by PLZ -->
     <div class="filter-events">

@@ -18,6 +18,7 @@ public class Event {
     private String createdBy;
     private Long userId;
     private String plz;
+    private String type;
 
     @Column(name = "event_date")
     private LocalDate eventDate;
@@ -88,5 +89,13 @@ public class Event {
 
     public void setPlz(String plz) {
         this.plz = plz;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

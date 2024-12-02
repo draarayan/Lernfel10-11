@@ -49,17 +49,20 @@ export class DashboardComponent implements OnInit {
   }
 
   createEvent(): void {
-    this.eventService.createEvent(this.newEvent).subscribe({
+    const eventToCreate = { ...this.newEvent, type: this.selectedEventType }; // Event-Typ hinzufügen
+  
+    this.eventService.createEvent(eventToCreate).subscribe({
       next: (event) => {
         this.events.push(event);
         this.filteredEvents.push(event);
-        this.newEvent = { title: '', description: '', plz: '' }; // Reset form after creation
+        this.newEvent = { title: '', description: '', plz: '' }; // Formular zurücksetzen
+        this.selectedEventType = ''; // Dropdown zurücksetzen
       },
       error: (error: HttpErrorResponse) => {
         console.error('Fehler beim Erstellen des Events:', error);
       }
     });
-  }
+  }  
 
   filterEvents(): void {
     this.filteredEvents = this.events.filter(event => event.plz.includes(this.filterPlz));
@@ -73,4 +76,14 @@ export class DashboardComponent implements OnInit {
   goToUserProfile(): void {
     this.router.navigate(['/profile']);
   }
+
+  eventTypes: { id: number; name: string }[] = [
+    { id: 1, name: 'Shopping' },
+    { id: 2, name: 'Sport' },
+    { id: 3, name: 'Meeting' },
+    { id: 4, name: 'Party' }
+  ];
+  
+  selectedEventType: string = '';
+
 }
