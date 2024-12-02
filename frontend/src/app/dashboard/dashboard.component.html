@@ -49,6 +49,33 @@
       <button (click)="filterEvents()">Filtern</button>
     </div>
 
+    
+    <div class="calendar-container">
+      <h2>Kalender</h2>
+      <!-- Datums-Input -->
+      <input 
+        type="date" 
+        [(ngModel)]="selectedDate" 
+        (ngModelChange)="onDateSelected()" 
+        class="form-input"
+      />
+    </div>
+    
+    <!-- Events für das ausgewählte Datum -->
+    <div class="selected-day-events" *ngIf="selectedDayEvents.length > 0">
+      <h3>Events am {{ selectedDate | date: 'longDate' }}</h3>
+      <div *ngFor="let event of selectedDayEvents" class="event-item">
+        <h4>{{ event.title }}</h4>
+        <p>{{ event.description }}</p>
+        <p>PLZ: {{ event.plz }}</p>
+      </div>
+    </div>
+    
+    <!-- Nachricht anzeigen, wenn keine Events vorhanden sind -->
+    <div *ngIf="selectedDate && selectedDayEvents.length === 0">
+      <p>Keine Events für das ausgewählte Datum.</p>
+    </div>
+
     <!-- Event List -->
     <div class="event-list">
       <h2>Eventliste</h2>
