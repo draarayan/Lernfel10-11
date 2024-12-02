@@ -16,6 +16,8 @@ export class DashboardComponent implements OnInit {
   filterPlz: string = '';
   events: any[] = [];
   filteredEvents: any[] = [];
+  selectedDate: string = ''; // Für das ausgewählte Datum
+  selectedDayEvents: any[] = []; // Events für das ausgewählte Datum
 
   constructor(private userService: UserService, private eventService: EventService, private router: Router) {}
 
@@ -25,6 +27,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.loadEvents();
     this.currentDate = new Date().toLocaleDateString();
     this.userService.getUserProfile().subscribe({
       next: (profile) => {
@@ -34,6 +37,7 @@ export class DashboardComponent implements OnInit {
         console.error('Fehler beim Laden des Benutzerprofils:', error);
         this.router.navigate(['/login']);
       }
+      
     });
 
     // Load events
@@ -87,4 +91,32 @@ export class DashboardComponent implements OnInit {
   
   selectedEventType: string = '';
 
+  loadEvents(): void {
+    this.eventService.getEvents().subscribe({
+      next: (events) => {
+        this.events = events;
+
+        // Events des aktuellen Tages laden, falls ein Datum gewählt ist
+        if (this.selectedDate) {
+          this.filterEventsByDate();
+        }
+      },
+      error: (error) => {
+        console.error('Fehler beim Laden der Events:', error);
+      }
+    });
+  }
+
+  onDateSelected(): void {
+    if (this.selectedDate) {
+      this.filterEventsByDate();
+    }
+  }
+
+  filterEventsByDate(): void {
+    const selectedDateString = new Date(this.selectedDate).toISOString().split('T')[0];
+    this.selectedDayEvents = this.events.filter((event) => {
+      return event.eventDate === selectedDateString; // Vergleiche das Datum
+    });
+  }
 }
