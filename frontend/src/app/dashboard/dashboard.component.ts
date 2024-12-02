@@ -81,8 +81,9 @@ export class DashboardComponent implements OnInit {
     { id: 1, name: 'Shopping' },
     { id: 2, name: 'Sport' },
     { id: 3, name: 'Meeting' },
-    { id: 4, name: 'Party' }
-  ];
+    { id: 4, name: 'Party' },
+    { id: 5, name: 'custom' }
+  ];  
   
   selectedEventType: string = '';
 
