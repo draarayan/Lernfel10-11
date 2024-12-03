@@ -17,6 +17,8 @@ export class DashboardComponent implements OnInit {
   filterPlz: string = '';
   userId: number = 0;
   filteredEvents: any[] = [];
+  selectedDate: string = ''; // Für das ausgewählte Datum
+  selectedDayEvents: any[] = []; // Events für das ausgewählte Datum
 
   constructor(private userService: UserService, private eventService: EventService, private router: Router) {}
 
@@ -100,5 +102,39 @@ export class DashboardComponent implements OnInit {
   ];  
   
   selectedEventType: string = '';
+
+  loadEvents(): void {
+    this.eventService.getEvents().subscribe({
+      next: (events) => {
+        this.events = events;
+
+        // Events des aktuellen Tages laden, falls ein Datum gewählt ist
+        if (this.selectedDate) {
+          this.filterEventsByDate();
+        }
+      },
+      error: (error) => {
+        console.error('Fehler beim Laden der Events:', error);
+      }
+    });
+  }
+
+  onDateSelected(): void {
+    if (this.selectedDate) {
+      this.filterEventsByDate();
+    }
+  }
+
+  filterEventsByDate(): void {
+    // Konvertiere das ausgewählte Datum in den Format 'YYYY-MM-DD'
+    const selectedDateString = new Date(this.selectedDate).toISOString().split('T')[0];
+  
+    // Filtere die Events, wobei das Datum korrekt verglichen wird
+    this.selectedDayEvents = this.events.filter((event) => {
+      // Stelle sicher, dass `event.eventDate` definiert ist und konvertiere es in 'YYYY-MM-DD'
+      const eventDateString = event.eventDate?.toISOString().split('T')[0];
+      return eventDateString === selectedDateString; // Vergleiche die Datumsstrings
+    });
+  }
 
 }
