@@ -36,7 +36,7 @@
   justify-content: space-around;
   align-items: center;
   padding: 2%;
-  background-color: white;
+  background-color: rgb(240, 255, 240);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
   border-radius: 20px;
 }
@@ -91,13 +91,19 @@ textarea {
   border-radius: 20px;
 }
 
+.event-list {
+  padding: 20px;
+  text-align: center;
+}
+
 .event-list .event-item {
-  background-color: #fff;
+  background-color: white;
   padding: 15px;
   margin-bottom: 10px;
-  border-radius: 8px;
+  border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 

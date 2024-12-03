@@ -22,8 +22,8 @@ body {
 .einkaufen-container {
   max-width: 1200px;
   padding: 20px;
-  font-family: Arial, sans-serif;
-  background-color: white;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: rgb(240, 255, 240);
   border-radius: 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -206,4 +206,8 @@ table tbody tr:nth-child(even) {
   cursor: pointer;
   border-radius: 20px;
   margin: 5px;
+}
+
+.dashboard-btn:hover {
+  background-color: rgb(20, 170, 50);
 }
