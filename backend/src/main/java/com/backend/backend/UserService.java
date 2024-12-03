@@ -3,23 +3,26 @@ package com.backend.backend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.backend.backend.repository.UserRepository;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class NutzerService {
+public class UserService {
 
     @Autowired
-    private NutzerRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<Nutzer> findAll() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public Nutzer save(Nutzer user) {
+    public User save(User user) {
         // Passwort vor dem Speichern hashen
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -33,12 +36,12 @@ public class NutzerService {
         return userRepository.existsByEmail(email);
     }
 
-    public Optional<Nutzer> findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public Optional<Nutzer> findByEmailAndPassword(String email, String password) {
-        Optional<Nutzer> user = userRepository.findByEmail(email);
+    public Optional<User> findByEmailAndPassword(String email, String password) {
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             boolean matches = passwordEncoder.matches(password, user.get().getPassword());
             if (matches) {
@@ -58,7 +61,7 @@ public class NutzerService {
 
     
     public void changePassword(String email, String currentPassword, String newPassword) {
-        Nutzer user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new IllegalArgumentException("Benutzer nicht gefunden"));
 
         
