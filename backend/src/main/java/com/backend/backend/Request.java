@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Anfrage {
+public class Request {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

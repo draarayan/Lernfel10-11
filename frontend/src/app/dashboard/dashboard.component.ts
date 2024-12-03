@@ -36,11 +36,11 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    // Load events
+    
     this.eventService.getEvents().subscribe({
       next: (events) => {
         this.events = events;
-        this.filteredEvents = events; // Initialize filtered events
+        this.filteredEvents = events; 
       },
       error: (error: HttpErrorResponse) => {
         console.error('Fehler beim Laden der Events:', error);
@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
       next: (event) => {
         this.events.push(event);
         this.filteredEvents.push(event);
-        this.newEvent = { title: '', description: '', plz: '' }; // Reset form after creation
+        this.newEvent = { title: '', description: '', plz: '' }; 
       },
       error: (error: HttpErrorResponse) => {
         console.error('Fehler beim Erstellen des Events:', error);

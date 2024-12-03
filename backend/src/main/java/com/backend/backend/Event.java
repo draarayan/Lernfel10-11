@@ -24,7 +24,7 @@ public class Event {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     @JsonManagedReference 
-    private List<Anfrage> anfragen = new ArrayList<>();
+    private List<Request> anfragen = new ArrayList<>();
     
     public LocalDate getEventDate() {
         return eventDate;
@@ -74,11 +74,11 @@ public class Event {
         this.createdBy = createdBy;
     }
 
-    public List<Anfrage> getAnfragen() {
+    public List<Request> getAnfragen() {
         return anfragen;
     }
 
-    public void setAnfragen(List<Anfrage> anfragen) {
+    public void setAnfragen(List<Request> anfragen) {
         this.anfragen = anfragen;
     }
 

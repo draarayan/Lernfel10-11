@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EventService } from '../event.service';
 import { Event } from '../event.model';
-import { Anfrage } from '../anfrage.model';
-import { AnfrageService } from '../anfrage.service';
+import { Anfrage } from '../request.model';
+import { AnfrageService } from '../request.service';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 @Component({

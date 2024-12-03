@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Anfrage } from './anfrage.model';
+import { Anfrage } from './request.model';
 
 @Injectable({
   providedIn: 'root'
