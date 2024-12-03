@@ -1,9 +1,9 @@
-Öffne ein neues Terminal in dem Repository-Ordner:\n
-Befehle:\n
-cd backend/\n
-mvn spring-boot:run\n
-\n
-Öffne ein zweites Terminal in dem Repository-Ordner:\n
-Befehle:\n
-cd frontend/\n
-ng serve
+Öffne ein neues Terminal in dem Repository-Ordner:
+	Befehle:
+		cd backend/
+		mvn spring-boot:run
+
+Öffne ein zweites Terminal in dem Repository-Ordner:
+	Befehle:
+		cd frontend/
+		ng serve
