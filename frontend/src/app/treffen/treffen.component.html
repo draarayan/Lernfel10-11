@@ -1,123 +1,123 @@
-<div class="treffen-container">
-    <h2 class="section-title">Einkaufs-Events</h2>
-  
-    <table class="events-table">
-      <thead>
-        <tr>
-          <th>Titel</th>
-          <th>Beschreibung</th>
-          <th>Erstellt von</th>
-          <th>Datum</th>
-          <th>Anfragen</th>
-          <th>Aktionen</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let event of events">
-          <td>{{ event.title }}</td>
-          <td>{{ event.description }}</td>
-          <td>{{ event.createdBy }}</td>
-          <td>{{ event.eventDate | date: 'shortDate' }}</td> 
-          <td *ngIf="event.id">
-            <textarea [(ngModel)]="requestText[event.id]" placeholder="Anfrage hinzufügen"></textarea>
-            <button class="btn btn-request" *ngIf="requestText[event.id]" (click)="requestItem(event.id, requestText[event.id])">Anfrage senden</button>
-          </td>
-          <td *ngIf="event.userId === userId">
-            <button *ngIf="event.id !== undefined" class="btn btn-danger" (click)="deleteEvent(event.id!)">Löschen</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <hr>
-  
+<div class="treffen-event">
+  <div class="treffen-container">
+      <h1 class="section-title">Einkaufs-Events</h1>
     
-    <h2 class="section-title">Anfragen zu meinen Events</h2>
-  
-    <table class="anfragen-table">
-      <thead>
-        <tr>
-          <th>Event ID</th>
-          <th>Von</th>
-          <th>Artikel</th>
-          <th>Datum</th>
-          <th>Aktionen</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let request of requests">
-          <td>{{ request.eventId }}</td>
-          <td>{{ request.requestedBy }}</td>
-          <td>{{ request.requestItem }}</td>
-          <td>{{ request.createdAt | date: 'short' }}</td> <!-- Anfrage-Datum anzeigen -->
-          <td>
-            <button class="btn btn-success" (click)="confirmRequest(request.id!)">Bestätigen</button>
-            <button class="btn btn-warning" (click)="rejectRequest(request.id!)">Ablehnen</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <hr>
-  
+      <table class="events-table">
+        <thead>
+          <tr>
+            <th>Titel</th>
+            <th>Beschreibung</th>
+            <th>Erstellt von</th>
+            <th>Datum</th>
+            <th>Anfragen</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of events">
+            <td>{{ event.title }}</td>
+            <td>{{ event.description }}</td>
+            <td>{{ event.createdBy }}</td>
+            <td>{{ event.eventDate | date: 'shortDate' }}</td> 
+            <td *ngIf="event.id">
+              <textarea [(ngModel)]="requestText[event.id]" placeholder="Anfrage hinzufügen"></textarea>
+              <button class="btn btn-request" *ngIf="requestText[event.id]" (click)="requestItem(event.id, requestText[event.id])">Anfrage senden</button>
+            </td>
+            <td *ngIf="event.userId === userId">
+              <button *ngIf="event.id !== undefined" class="btn btn-danger" (click)="deleteEvent(event.id!)">Löschen</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     
-    <div class="new-event-form">
-      <h3 class="section-title">Neues Einkaufs-Event erstellen</h3>
+      <hr>
     
-      <!-- Dropdown für Event-Titel -->
-      <label for="eventTitle">Event-Titel:</label>
-      <select id="eventTitle" [(ngModel)]="newEvent.title" required class="form-input">
-        <option value="">Bitte auswählen</option>
-        <option *ngFor="let type of eventTypes" [value]="type.name">
-          {{ type.name }}
-        </option>
-      </select>
+      
+      <h2 class="section-title">Anfragen zu meinen Events</h2>
     
-      <!-- Benutzerdefinierter Titel -->
-      <label *ngIf="newEvent.title === 'custom'" for="customTitle">Benutzerdefinierter Titel:</label>
-      <input
-        *ngIf="newEvent.title === 'custom'"
-        id="customTitle"
-        type="text"
-        [(ngModel)]="newEvent.title"
-        placeholder="Benutzerdefinierter Titel"
-        class="form-input"
-      />
+      <table class="anfragen-table">
+        <thead>
+          <tr>
+            <th>Event ID</th>
+            <th>Von</th>
+            <th>Artikel</th>
+            <th>Datum</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of requests">
+            <td>{{ request.eventId }}</td>
+            <td>{{ request.requestedBy }}</td>
+            <td>{{ request.requestItem }}</td>
+            <td>{{ request.createdAt | date: 'short' }}</td> <!-- Anfrage-Datum anzeigen -->
+            <td>
+              <button class="btn btn-success" (click)="confirmRequest(request.id!)">Bestätigen</button>
+              <button class="btn btn-warning" (click)="rejectRequest(request.id!)">Ablehnen</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     
-      <textarea [(ngModel)]="newEvent.description" placeholder="Event-Beschreibung" class="form-textarea"></textarea>
-      <input type="date" [(ngModel)]="newEvent.eventDate" required class="form-input" />
-      <button class="btn btn-create" (click)="createEvent()">Event erstellen</button>
+      <hr>
+    
+      
+      <div class="new-event-form">
+        <h3 class="section-title">Neues Einkaufs-Event erstellen</h3>
+      
+        <!-- Dropdown für Event-Titel -->
+        <label for="eventTitle">Event-Titel:</label>
+        <select id="eventTitle" [(ngModel)]="newEvent.title" required class="form-input">
+          <option value="">Bitte auswählen</option>
+          <option *ngFor="let type of eventTypes" [value]="type.name">
+            {{ type.name }}
+          </option>
+        </select>
+      
+        <!-- Benutzerdefinierter Titel -->
+        <label *ngIf="newEvent.title === 'custom'" for="customTitle">Benutzerdefinierter Titel:</label>
+        <input
+          *ngIf="newEvent.title === 'custom'"
+          id="customTitle"
+          type="text"
+          [(ngModel)]="newEvent.title"
+          placeholder="Benutzerdefinierter Titel"
+          class="form-input"
+        />
+      
+        <textarea [(ngModel)]="newEvent.description" placeholder="Event-Beschreibung" class="form-textarea"></textarea>
+        <input type="date" [(ngModel)]="newEvent.eventDate" required class="form-input" />
+        <button class="btn btn-create" (click)="createEvent()">Event erstellen</button>
+      </div>
+      
+    
+      <hr>
+    
+    
+    <div class="request-container">
+      <h2>Meine Anfragen</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Event</th>
+            <th>Von</th>
+            <th>Artikel</th>
+            <th>Status</th>
+            <th>Datum</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of myRequests">
+            <td>{{ getEventTitle(request.eventId) }}</td>
+            <td>{{ request.requestedBy }}</td>
+            <td>{{ request.requestItem }}</td>
+            <td>{{ request.status }}</td>
+            <td>{{ request.createdAt | date: 'short' }}</td>
+          </tr>
+          
+        </tbody>
+      </table>
+      <button (click)="goToDashboard()" class="dashboard-btn">Zurück zum Dashboard</button>
     </div>
-    
-  
-    <hr>
-  
-  
-  <div class="request-container">
-    <h2>Meine Anfragen</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Event</th>
-          <th>Von</th>
-          <th>Artikel</th>
-          <th>Status</th>
-          <th>Datum</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let request of myRequests">
-          <td>{{ getEventTitle(request.eventId) }}</td>
-          <td>{{ request.requestedBy }}</td>
-          <td>{{ request.requestItem }}</td>
-          <td>{{ request.status }}</td>
-          <td>{{ request.createdAt | date: 'short' }}</td>
-        </tr>
-        
-      </tbody>
-    </table>
-    <button (click)="goToDashboard()">Zurück zum Dashboard</button>
   </div>
-  
-  </div>
-  
+</div>  

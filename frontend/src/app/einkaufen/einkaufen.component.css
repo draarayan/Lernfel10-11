@@ -18,9 +18,9 @@ body {
   background-image: linear-gradient(to bottom right, white, rgb(0, 180, 0));
 }
 
-/* Container Styling */
 .einkaufen-container {
-  max-width: 1200px;
+  max-width: fit-content;
+  width: 30%;
   padding: 20px;
   font-family: "Helvetica Neue", Arial, sans-serif;
   background-color: rgb(240, 255, 240);
@@ -38,7 +38,7 @@ body {
   padding-bottom: 10px;
 }
 
-.anfragen-container {
+.request-container {
   text-align: center;
   color: rgb(20, 200, 50);
   text-transform: uppercase;
@@ -206,6 +206,7 @@ table tbody tr:nth-child(even) {
   cursor: pointer;
   border-radius: 20px;
   margin: 5px;
+  font-size: 16px;
 }
 
 .dashboard-btn:hover {
