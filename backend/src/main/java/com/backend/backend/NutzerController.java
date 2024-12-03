@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.backend.backend.dto.PasswordChangeRequest;
 import com.backend.backend.repository.EventRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
