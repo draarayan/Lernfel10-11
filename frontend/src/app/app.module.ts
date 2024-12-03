@@ -11,6 +11,8 @@ import { AuthGuard } from './auth.guard';
 import { UserProfileViewComponent } from './user-profile-view/user-profile-view.component';
 import { EinkaufenComponent } from './einkaufen/einkaufen.component';
 import { FormsModule} from '@angular/forms';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -32,7 +34,9 @@ const routes: Routes = [
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule, 
+    FormsModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
     RouterModule.forRoot(routes)
   ],
   providers: [],

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.backend.backend.dto.PasswordChangeRequest;
 import com.backend.backend.repository.EventRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,10 +16,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "http://localhost:4200") 
-public class NutzerController {
+public class UserController {
 
     @Autowired
-    private final NutzerService userService;
+    private final UserService userService;
 
     @Autowired
     private EventRepository eventRepository;
@@ -30,7 +29,7 @@ public class NutzerController {
     return eventRepository.findByPlz(plz);
     }
 
-    public NutzerController(NutzerService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -38,8 +37,8 @@ public class NutzerController {
     private JwtTokenProvider jwtTokenProvider;
     
     @GetMapping
-    public ResponseEntity<List<Nutzer>> getAllUsers() {
-        List<Nutzer> users = userService.findAll();
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.findAll();
         return ResponseEntity.ok(users);
     }
     @CrossOrigin(origins = "http://localhost:4200")
@@ -51,7 +50,7 @@ public class NutzerController {
         }
     
         String username = principal.getName();
-        Optional<Nutzer> user = userService.findByEmail(username);
+        Optional<User> user = userService.findByEmail(username);
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
         } else {
@@ -60,7 +59,7 @@ public class NutzerController {
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody Nutzer user) {
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
         if (user.getEmail() == null || user.getPassword() == null || user.getName() == null || user.getNachname() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fehlende erforderliche Felder");
         }
@@ -80,8 +79,8 @@ public class NutzerController {
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody Nutzer user) {
-        Optional<Nutzer> existingUser = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
+        Optional<User> existingUser = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
         if (existingUser.isPresent()) {
             String token = jwtTokenProvider.createToken(user.getEmail());  
             return ResponseEntity.ok(Map.of("token", token));  
