@@ -94,11 +94,11 @@ export class DashboardComponent implements OnInit {
   }
 
   eventTypes: { id: number; name: string }[] = [
-    { id: 1, name: 'Shopping' },
+    { id: 1, name: 'Einkauf' },
     { id: 2, name: 'Sport' },
-    { id: 3, name: 'Meeting' },
-    { id: 4, name: 'Party' },
-    { id: 5, name: 'custom' }
+    { id: 3, name: 'Treffen' },
+    { id: 4, name: 'Feier' },
+    { id: 5, name: 'Eigenes' }
   ];  
   
   selectedEventType: string = '';
