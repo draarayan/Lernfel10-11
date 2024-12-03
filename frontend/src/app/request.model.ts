@@ -1,5 +1,5 @@
-// anfrage.model.ts
-export interface Anfrage {
+// request.model.ts
+export interface Request {
   id?: number;
   eventId: number;
   requestedBy: string;

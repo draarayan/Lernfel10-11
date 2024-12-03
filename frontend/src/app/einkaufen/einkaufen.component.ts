@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EventService } from '../event.service';
 import { Event } from '../event.model';
-import { Anfrage } from '../request.model';
-import { AnfrageService } from '../request.service';
+import { Request } from '../request.model';
+import { RequestService } from '../request.service';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 @Component({
@@ -12,18 +12,18 @@ import { Router } from '@angular/router';
 })
 export class EinkaufenComponent implements OnInit {
   events: Event[] = [];
-  anfragen: Anfrage[] = [];
+  requests: Request[] = [];
   newEvent: Event = { title: '', description: '', createdBy: '', userId: 0,   plz: '', eventDate:  new Date() };
   requestText: { [key: number]: string } = {};
   userName: string = '';
   userId: number = 0;
-  myRequests: Anfrage[] = [];
+  myRequests: Request[] = [];
   eventsMap: { [key: number]: string } = {};
 
   constructor(
     private router: Router,
     private eventService: EventService,
-    private anfrageService: AnfrageService,
+    private requestService: RequestService,
     private userService: UserService
   ) {}
 
@@ -31,10 +31,10 @@ export class EinkaufenComponent implements OnInit {
     this.loadUserProfile();
     this.loadEvents();
     this.loadMyRequests();
-    this.loadAnfragen();
+    this.loadRequests();
   }
   loadAcceptedRequests(): void { //wird noch nicht genutzt
-    this.anfrageService.getAcceptedRequests(this.userId).subscribe({
+    this.requestService.getAcceptedRequests(this.userId).subscribe({
       next: (requests) => {
         this.myRequests = requests;
       },
@@ -45,7 +45,7 @@ export class EinkaufenComponent implements OnInit {
   }
   
   loadRejectedRequests(): void { //wird noch nicht genutzt
-    this.anfrageService.getRejectedRequests(this.userId).subscribe({
+    this.requestService.getRejectedRequests(this.userId).subscribe({
       next: (requests) => {
         this.myRequests = requests;
       },
@@ -65,7 +65,7 @@ export class EinkaufenComponent implements OnInit {
         this.newEvent.createdBy = this.userName; 
         this.newEvent.userId = this.userId;      
         this.loadMyRequests();
-        this.loadAnfragen(); 
+        this.loadRequests(); 
       },
       error: (error) => {
         console.error('Fehler beim Laden des Benutzerprofils:', error);
@@ -95,12 +95,12 @@ export class EinkaufenComponent implements OnInit {
   }
   
 
-  loadAnfragen(): void {
+  loadRequests(): void {
     if (this.userId !== 0) {
-      this.anfrageService.getAnfragenByOwnerId(this.userId).subscribe({
-        next: (anfragen) => {
-          console.log('Active Requests:', anfragen);
-          this.anfragen = anfragen;
+      this.requestService.getRequestsByOwnerId(this.userId).subscribe({
+        next: (requests) => {
+          console.log('Active Requests:', requests);
+          this.requests = requests;
         },
         error: (error) => {
           console.error('Fehler beim Laden der Anfragen:', error);
@@ -112,7 +112,7 @@ export class EinkaufenComponent implements OnInit {
 
   loadMyRequests(): void {
     if (this.userId !== 0) {
-      this.anfrageService.getMyRequests(this.userId).subscribe({
+      this.requestService.getMyRequests(this.userId).subscribe({
         next: (requests) => {
           this.myRequests = requests;
           console.log('Meine Anfragen:', this.myRequests);
@@ -154,14 +154,14 @@ export class EinkaufenComponent implements OnInit {
       return;
     }
   
-    const anfrage: Anfrage = {
+    const request: Request = {
       eventId: eventId,
       requestedBy: this.userName,
       requestItem: requestText,
       requestedByUserId: this.userId
     };
   
-    this.anfrageService.createAnfrage(anfrage, eventId, this.userId).subscribe({
+    this.requestService.createRequest(request, eventId, this.userId).subscribe({
       next: () => {
         alert('Anfrage erfolgreich gesendet');
         this.requestText[eventId] = ''; 
@@ -175,11 +175,11 @@ export class EinkaufenComponent implements OnInit {
 
 
   
-  confirmAnfrage(anfrageId: number): void {
-    this.anfrageService.confirmAnfrage(anfrageId).subscribe({
+  confirmRequest(requestId: number): void {
+    this.requestService.confirmRequest(requestId).subscribe({
       next: () => {
         alert('Anfrage erfolgreich bestätigt');
-        this.loadAnfragen(); 
+        this.loadRequests(); 
       },
       error: (error) => {
         console.error('Fehler beim Bestätigen der Anfrage:', error);
@@ -188,11 +188,11 @@ export class EinkaufenComponent implements OnInit {
   }
 
   
-  rejectAnfrage(anfrageId: number): void {
-    this.anfrageService.rejectAnfrage(anfrageId).subscribe({
+  rejectRequest(requestId: number): void {
+    this.requestService.rejectRequest(requestId).subscribe({
       next: () => {
         alert('Anfrage erfolgreich abgelehnt');
-        this.loadAnfragen(); 
+        this.loadRequests(); 
       },
       error: (error) => {
         console.error('Fehler beim Ablehnen der Anfrage:', error);
