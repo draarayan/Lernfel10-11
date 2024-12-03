@@ -17,7 +17,7 @@ public class EventServiceIntegrationTest {
 
     @Test
     public void testAddEvent() {
-        // Arrange: Erstelle ein neues Event
+        // Arrange: Erstelle ein neues Event.
         Event event = new Event();
         event.setTitle("Test Event");
         event.setDescription("This is a test event");
