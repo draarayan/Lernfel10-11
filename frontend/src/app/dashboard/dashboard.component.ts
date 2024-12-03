@@ -131,9 +131,13 @@ export class DashboardComponent implements OnInit {
   
     // Filtere die Events, wobei das Datum korrekt verglichen wird
     this.selectedDayEvents = this.events.filter((event) => {
-      // Stelle sicher, dass `event.eventDate` definiert ist und konvertiere es in 'YYYY-MM-DD'
-      const eventDateString = event.eventDate?.toISOString().split('T')[0];
-      return eventDateString === selectedDateString; // Vergleiche die Datumsstrings
+      if (!event.eventDate) {
+        console.warn('Event has no date:', event);
+        return false;
+      }
+      const eventDateString = new Date(event.eventDate).toISOString().split('T')[0];
+      console.log('Comparing:', eventDateString, selectedDateString);
+      return eventDateString === selectedDateString;
     });
   }
 
