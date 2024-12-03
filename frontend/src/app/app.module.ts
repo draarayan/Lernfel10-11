@@ -10,7 +10,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth.guard'; 
 import { UserProfileViewComponent } from './user-profile-view/user-profile-view.component';
 import { EinkaufenComponent } from './einkaufen/einkaufen.component';
-import { FormsModule} from '@angular/forms';
+import { SportComponent } from './sport/sport.component';
+import { TreffenComponent } from './treffen/treffen.component';
+import { FeierComponent } from './feier/feier.component';
+import { EigenesComponent } from './eigenes/eigenes.component';
+import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -19,7 +23,12 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: UserProfileViewComponent, canActivate: [AuthGuard] },
   { path: 'einkaufen', component: EinkaufenComponent, canActivate: [AuthGuard] },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }
+  { path: 'sport', component: SportComponent, canActivate: [AuthGuard] },        
+  { path: 'treffen', component: TreffenComponent, canActivate: [AuthGuard] },   
+  { path: 'feier', component: FeierComponent, canActivate: [AuthGuard] },        
+  { path: 'eigenes', component: EigenesComponent, canActivate: [AuthGuard] },    
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/dashboard' } 
 ];
 
 @NgModule({
@@ -28,7 +37,11 @@ const routes: Routes = [
     LoginComponent,
     DashboardComponent,
     EinkaufenComponent,
-    UserProfileViewComponent
+    UserProfileViewComponent,
+    SportComponent,      
+    TreffenComponent,    
+    FeierComponent,      
+    EigenesComponent     
   ],
   imports: [
     BrowserModule,

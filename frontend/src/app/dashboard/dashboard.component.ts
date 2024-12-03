@@ -25,6 +25,18 @@ export class DashboardComponent implements OnInit {
   goToEinkaufen(): void {
     this.router.navigate(['/einkaufen']);
   }
+  goToSport(): void {
+    this.router.navigate(['/sport']);
+  }
+  goToTreffen(): void {
+    this.router.navigate(['/treffen']);
+  }
+  goToFeier(): void {
+    this.router.navigate(['/feier']);
+  }
+  goToEigenes(): void {
+    this.router.navigate(['/eigenes']);
+  }
 
   ngOnInit(): void {
     this.loadUserProfile();
