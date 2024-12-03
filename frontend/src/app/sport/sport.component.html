@@ -1,7 +1,6 @@
-<div class="einkaufen-event">
-  <div class="einkaufen-container">
-    <h1 class="section-title">Einkaufs-Events</h1>
-
+<div class="sport-container">
+    <h2 class="section-title">Einkaufs-Events</h2>
+  
     <table class="events-table">
       <thead>
         <tr>
@@ -29,41 +28,41 @@
         </tr>
       </tbody>
     </table>
-
+  
     <hr>
-
+  
     
     <h2 class="section-title">Anfragen zu meinen Events</h2>
-    
+  
     <table class="anfragen-table">
-    <thead>
-      <tr>
-        <th>Event ID</th>
-        <th>Von</th>
-        <th>Artikel</th>
-        <th>Datum</th>
-        <th>Aktionen</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let request of requests">
-        <td>{{ request.eventId }}</td>
-        <td>{{ request.requestedBy }}</td>
-        <td>{{ request.requestItem }}</td>
-        <td>{{ request.createdAt | date: 'short' }}</td> <!-- Anfrage-Datum anzeigen -->
-        <td>
-          <button class="btn btn-success" (click)="confirmRequest(request.id!)">Bestätigen</button>
-          <button class="btn btn-warning" (click)="rejectRequest(request.id!)">Ablehnen</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
+      <thead>
+        <tr>
+          <th>Event ID</th>
+          <th>Von</th>
+          <th>Artikel</th>
+          <th>Datum</th>
+          <th>Aktionen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of requests">
+          <td>{{ request.eventId }}</td>
+          <td>{{ request.requestedBy }}</td>
+          <td>{{ request.requestItem }}</td>
+          <td>{{ request.createdAt | date: 'short' }}</td> <!-- Anfrage-Datum anzeigen -->
+          <td>
+            <button class="btn btn-success" (click)="confirmRequest(request.id!)">Bestätigen</button>
+            <button class="btn btn-warning" (click)="rejectRequest(request.id!)">Ablehnen</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
     <hr>
-
+  
     
     <div class="new-event-form">
-      <h2 class="section-title">Neues Einkaufs-Event erstellen</h2>
+      <h3 class="section-title">Neues Einkaufs-Event erstellen</h3>
     
       <!-- Dropdown für Event-Titel -->
       <label for="eventTitle">Event-Titel:</label>
@@ -90,34 +89,35 @@
       <button class="btn btn-create" (click)="createEvent()">Event erstellen</button>
     </div>
     
+  
     <hr>
-
-
-<div class="request-container">
-  <h2>Meine Anfragen</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Event</th>
-        <th>Von</th>
-        <th>Artikel</th>
-        <th>Status</th>
-        <th>Datum</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let request of myRequests">
-        <td>{{ getEventTitle(request.eventId) }}</td>
-        <td>{{ request.requestedBy }}</td>
-        <td>{{ request.requestItem }}</td>
-        <td>{{ request.status }}</td>
-        <td>{{ request.createdAt | date: 'short' }}</td>
-      </tr>
-      
-    </tbody>
-  </table>
-  <button (click)="goToDashboard()" class="dashboard-btn">Zurück zum Dashboard</button>
-</div>
-
-</div>
-
+  
+  
+  <div class="request-container">
+    <h2>Meine Anfragen</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Event</th>
+          <th>Von</th>
+          <th>Artikel</th>
+          <th>Status</th>
+          <th>Datum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of myRequests">
+          <td>{{ getEventTitle(request.eventId) }}</td>
+          <td>{{ request.requestedBy }}</td>
+          <td>{{ request.requestItem }}</td>
+          <td>{{ request.status }}</td>
+          <td>{{ request.createdAt | date: 'short' }}</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    <button (click)="goToDashboard()">Zurück zum Dashboard</button>
+  </div>
+  
+  </div>
+  
