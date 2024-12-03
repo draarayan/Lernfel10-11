@@ -19,16 +19,16 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     void deleteByEventId(Long eventId);
 
     // Finde alle abgelehnten Anfragen eines Benutzers
-    @Query("SELECT a FROM Anfrage a WHERE a.requestedByUserId = :userId AND a.status = 'rejected'")
+    @Query("SELECT a FROM Request a WHERE a.requestedByUserId = :userId AND a.status = 'rejected'")
     List<Request> findRejectedRequestsByUserId(@Param("userId") Long userId);
 
     // Finde alle angenommenen Anfragen eines Benutzers
-    @Query("SELECT a FROM Anfrage a WHERE a.requestedByUserId = :userId AND a.status = 'accepted'")
+    @Query("SELECT a FROM Request a WHERE a.requestedByUserId = :userId AND a.status = 'accepted'")
     List<Request> findAcceptedRequestsByUserId(@Param("userId") Long userId);
     // Finde alle abgelehnten Anfragen anhand des Owners
-    @Query("SELECT a FROM Anfrage a WHERE a.event.userId = :ownerId AND a.status != 'rejected'")
+    @Query("SELECT a FROM Request a WHERE a.event.userId = :ownerId AND a.status != 'rejected'")
     List<Request> findActiveRequestsByOwnerId(@Param("ownerId") Long ownerId);
     //Finde alle Anfragen eines Users
-    @Query("SELECT a FROM Anfrage a WHERE a.requestedByUserId = :userId")
+    @Query("SELECT a FROM Request a WHERE a.requestedByUserId = :userId")
     List<Request> findByRequestedByUserId(@Param("userId") Long userId);
 }
