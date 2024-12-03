@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
         console.error('Fehler beim Erstellen des Events:', error);
       }
     });
-  }
+  }  
 
   filterEvents(): void {
     this.filteredEvents = this.events.filter(event => event.plz.includes(this.filterPlz));
@@ -75,6 +75,7 @@ export class DashboardComponent implements OnInit {
   goToUserProfile(): void {
     this.router.navigate(['/profile']);
   }
+
   loadUserProfile(): void {
     this.userService.getUserProfile().subscribe({
       next: (profile) => {
@@ -89,5 +90,15 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+
+  eventTypes: { id: number; name: string }[] = [
+    { id: 1, name: 'Shopping' },
+    { id: 2, name: 'Sport' },
+    { id: 3, name: 'Meeting' },
+    { id: 4, name: 'Party' },
+    { id: 5, name: 'custom' }
+  ];  
   
+  selectedEventType: string = '';
+
 }

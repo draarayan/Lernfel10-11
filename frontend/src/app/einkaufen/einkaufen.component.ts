@@ -19,6 +19,14 @@ export class EinkaufenComponent implements OnInit {
   userId: number = 0;
   myRequests: Request[] = [];
   eventsMap: { [key: number]: string } = {};
+  
+  eventTypes: { name: string }[] = [
+    { name: 'Shopping' },
+    { name: 'Sport' },
+    { name: 'Meeting' },
+    { name: 'Party' },
+    { name: 'custom' }
+  ];
 
   constructor(
     private router: Router,
