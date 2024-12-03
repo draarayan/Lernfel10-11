@@ -6,11 +6,11 @@ import { RequestService } from '../request.service';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 @Component({
-  selector: 'app-einkaufen',
-  templateUrl: './einkaufen.component.html',
-  styleUrls: ['./einkaufen.component.css']
+  selector: 'app-sport',
+  templateUrl: './sport.component.html',
+  styleUrls: ['./sport.component.css']
 })
-export class EinkaufenComponent implements OnInit {
+export class SportComponent implements OnInit {
   events: Event[] = [];
   requests: Request[] = [];
   newEvent: Event = { title: '', description: '', createdBy: '', userId: 0,   plz: '', eventDate:  new Date() };
@@ -21,11 +21,11 @@ export class EinkaufenComponent implements OnInit {
   eventsMap: { [key: number]: string } = {};
   
   eventTypes: { name: string }[] = [
-    { name: 'Shopping' },
+    { name: 'Einkauf' },
     { name: 'Sport' },
-    { name: 'Meeting' },
-    { name: 'Party' },
-    { name: 'custom' }
+    { name: 'Treffen' },
+    { name: 'Feier' },
+    { name: 'Eigenes' }
   ];
 
   constructor(
@@ -87,7 +87,7 @@ export class EinkaufenComponent implements OnInit {
   loadEvents(): void {
     this.eventService.getEvents().subscribe({
       next: (events) => {
-        this.events = events.filter(event => event.title === 'Einkauf');
+        this.events = events.filter(event => event.title === 'Sport');
         events.forEach(event => {
           if (event.id !== undefined) {
             this.eventsMap[event.id] = event.title;
