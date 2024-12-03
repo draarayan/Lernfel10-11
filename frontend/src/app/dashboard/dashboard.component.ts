@@ -3,18 +3,19 @@ import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { EventService } from '../event.service';
 import { HttpErrorResponse } from '@angular/common/http';
-
+import { Event } from '../event.model';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  events: Event[] = [];
   currentDate: string = '';
   userName: string = '';
-  newEvent = { title: '', description: '', plz: '' };
+  newEvent: Event = { title: '', description: '', createdBy: '', userId: 0,   plz: '', eventDate:  new Date() };
   filterPlz: string = '';
-  events: any[] = [];
+  userId: number = 0;
   filteredEvents: any[] = [];
 
   constructor(private userService: UserService, private eventService: EventService, private router: Router) {}
@@ -24,7 +25,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.loadUserProfile();
     this.currentDate = new Date().toLocaleDateString();
     this.userService.getUserProfile().subscribe({
       next: (profile) => {
@@ -48,14 +49,15 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+
   createEvent(): void {
+    this.newEvent.createdBy = this.userName;
+    this.newEvent.userId = this.userId;
     this.eventService.createEvent(this.newEvent).subscribe({
       next: (event) => {
-        this.events.push(event);
-        this.filteredEvents.push(event);
-        this.newEvent = { title: '', description: '', plz: '' }; 
+        this.newEvent = { title: '', description: '', createdBy: this.userName, userId: this.userId, eventDate: new Date(), plz: '' };
       },
-      error: (error: HttpErrorResponse) => {
+      error: (error) => {
         console.error('Fehler beim Erstellen des Events:', error);
       }
     });
@@ -73,4 +75,19 @@ export class DashboardComponent implements OnInit {
   goToUserProfile(): void {
     this.router.navigate(['/profile']);
   }
+  loadUserProfile(): void {
+    this.userService.getUserProfile().subscribe({
+      next: (profile) => {
+        this.userName = profile.name;
+        this.userId = profile.id;
+
+        this.newEvent.createdBy = this.userName; 
+        this.newEvent.userId = this.userId;    
+      },
+      error: (error) => {
+        console.error('Fehler beim Laden des Benutzerprofils:', error);
+      }
+    });
+  }
+  
 }
