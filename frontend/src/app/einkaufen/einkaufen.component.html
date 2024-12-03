@@ -46,13 +46,13 @@
     </thead>
     <tbody>
       <tr *ngFor="let anfrage of anfragen">
-        <td>{{ anfrage.eventId }}</td>
-        <td>{{ anfrage.requestedBy }}</td>
-        <td>{{ anfrage.requestItem }}</td>
-        <td>{{ anfrage.createdAt | date: 'short' }}</td> <!-- Anfrage-Datum anzeigen -->
+        <td>{{ request.eventId }}</td>
+        <td>{{ request.requestedBy }}</td>
+        <td>{{ request.requestItem }}</td>
+        <td>{{ request.createdAt | date: 'short' }}</td> <!-- Anfrage-Datum anzeigen -->
         <td>
-          <button class="btn btn-success" (click)="confirmAnfrage(anfrage.id!)">Bestätigen</button>
-          <button class="btn btn-warning" (click)="rejectAnfrage(anfrage.id!)">Ablehnen</button>
+          <button class="btn btn-success" (click)="confirmRequest(request.id!)">Bestätigen</button>
+          <button class="btn btn-warning" (click)="rejectRequest(request.id!)">Ablehnen</button>
         </td>
       </tr>
     </tbody>
