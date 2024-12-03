@@ -1,4 +1,4 @@
-package com.backend.backend;
+package com.backend.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

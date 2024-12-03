@@ -1,4 +1,4 @@
-package com.backend.backend;
+package com.backend.backend.controller;
 
 
 
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.backend.model.Event;
 import com.backend.backend.repository.EventRepository;
 @RestController
 @RequestMapping("/api/events")

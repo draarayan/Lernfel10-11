@@ -1,11 +1,16 @@
-package com.backend.backend;
+package com.backend.backend.controller;
 
 import java.util.Map;  
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.backend.backend.model.Event;
+import com.backend.backend.model.User;
 import com.backend.backend.repository.EventRepository;
+import com.backend.backend.service.UserService;
+import com.backend.backend.token.JwtTokenProvider;
 
 import jakarta.servlet.http.HttpServletRequest;
 
