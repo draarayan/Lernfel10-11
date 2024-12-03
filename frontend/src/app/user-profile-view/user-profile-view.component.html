@@ -1,28 +1,26 @@
 <div class="user-profile">
+  <div class="container">
     <h1>User Profile</h1>
     <div class="profile-info">
       <p><strong>Name:</strong> {{ user.name }}</p>
       <p><strong>Nachname:</strong> {{ user.nachname }}</p>
       <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Password:</strong> **********</p> 
     </div>
     <div class="change-password">
       <h3>Passwort ändern</h3>
       <form (ngSubmit)="changePassword()">
-        <div>
-          <label for="currentPassword">Aktuelles Passwort</label>
+        <div class="set-password">
+          <label for="currentPassword">Aktuelles Passwort:</label> <br>
           <input type="password" id="currentPassword" [(ngModel)]="currentPassword" name="currentPassword" required />
         </div>
-        <div>
-          <label for="newPassword">Neues Passwort</label>
+        <div class="set-password">
+          <label for="newPassword">Neues Passwort:</label> <br>
           <input type="password" id="newPassword" [(ngModel)]="newPassword" name="newPassword" required />
         </div>
-        <button type="submit">Ändern</button>
+        <button type="submit" class="change-btn">Ändern</button>
       </form>
+      <button (click)="goToDashboard()">Zurück zum Dashboard</button>
+      <button (click)="deleteAccount()">Delete Account</button>
     </div>
-    
-    <button (click)="goToDashboard()">Zurück zum Dashboard</button>
-
-    <button (click)="deleteAccount()">Delete Account</button>
   </div>
-  
+</div>
