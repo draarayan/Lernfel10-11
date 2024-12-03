@@ -1,36 +1,44 @@
 .dashboard-container {
+  width: 100%;
+  min-width: fit-content;
+  height: 100vh;
+  min-height: fit-content;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
   font-family: "Helvetica Neue", Arial, sans-serif;
-  background-color: #f5f5f5; /* Soft background */
-  padding: 2%;
+  background-image: linear-gradient(to bottom right, white, rgb(0, 180, 0));
   margin: 0;
 }
 
 .header {
+  width: 40%;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
-  border-bottom: 1px solid #ddd; /* Subtle border */
   font-size: 14px;
-  color: #777; /* Lighter text color */
 }
 
 .date,
 .user-name {
   font-weight: bold;
+  color: black;
 }
 
 .main-content {
+  width: 40%;
+  min-width: fit-content;
+  height: 50vh;
+  min-height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  flex: 1;
+  align-items: center;
   padding: 2%;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 h1 {
@@ -44,6 +52,7 @@ h2 {
 }
 
 button {
+  min-width: fit-content;
   background-color: rgb(20, 200, 50);
   color: white;
   border: none;
@@ -57,13 +66,29 @@ button:hover {
   background-color: rgb(20, 170, 50);
 }
 
+#title {
+  padding: 5px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.create-event {
+  width: 50%;
+  display: inline-block;
+}
+
+.filter-events {
+  width: 50%;
+  display: inline-block;
+}
+
 input,
 textarea {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 20px;
 }
 
 .event-list .event-item {
@@ -99,5 +124,5 @@ textarea {
 .footer {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
