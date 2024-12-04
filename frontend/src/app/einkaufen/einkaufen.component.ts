@@ -21,11 +21,11 @@ export class EinkaufenComponent implements OnInit {
   eventsMap: { [key: number]: string } = {};
   
   eventTypes: { name: string }[] = [
-    { name: 'Shopping' },
+    { name: 'Einkauf' },
     { name: 'Sport' },
-    { name: 'Meeting' },
-    { name: 'Party' },
-    { name: 'custom' }
+    { name: 'Treffen' },
+    { name: 'Feier' },
+    { name: 'Eigenes' }
   ];
 
   constructor(
